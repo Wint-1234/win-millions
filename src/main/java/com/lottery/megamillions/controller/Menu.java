@@ -3,33 +3,42 @@ package com.lottery.megamillions.controller;
 import java.util.Scanner;
 
 public class Menu {
+
   public static final int EXIT_CODE = 0;
 
   private int userInput = 99;
 
-  public Menu(){
-    System.out.println("Welcome to Win Millions!");
+  // Startup message to the program.
+  public Menu() {
+    System.out.println("----------Welcome to Win Millions!----------");
     System.out.println("");
   }
 
-  public void run(){
+  // only exits on 0
+  // Potentionally change the return type to return to the menu to so the Menu object can call other methods.
+  public void run() {
     Scanner input = new Scanner(System.in);
 
-    while(userInput != EXIT_CODE){
+    while (userInput != EXIT_CODE) {
       startingMenu();
 
-      if(input.hasNextInt()){
-        userInput = input.nextInt();
-      } else if (userInput < 0 || userInput > 7){
-        System.out.println("Enter a number between 0 and 7");
-      } else {
-        System.out.println("Enter a number between 0 and 7");
+      while(!input.hasNextInt()){
+        System.out.println("Please enter a number 0 to 7.");
+        input.next();
       }
+      userInput = input.nextInt();
+      if(userInput < 0 || userInput > 7){
+        System.out.println("Please enter a number 0 to 7.");
+        input.next();
+      }
+      // TODO: 10/3/2022 add a method for userInput to call a necessary function?
+
+
     }
 
   }
 
-  public void startingMenu(){
+  public void startingMenu() {
     System.out.println("1. Create lottery numbers cart.");
     System.out.println("2. Predict numbers for me.");
     System.out.println("3. Display Repeated Mega Ball Winning Numbers.");
