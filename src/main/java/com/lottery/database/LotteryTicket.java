@@ -2,4 +2,7 @@ package com.lottery.database;
 
 public class LotteryTicket {
 
+
+
+
 }
