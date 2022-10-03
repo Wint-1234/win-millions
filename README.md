@@ -5,6 +5,3 @@ Summary: This application aims to attempt to predict future winning lottery numb
 TESTLINE
 TESTLINE
 TESLINE
-
-
-This is another Test by Eric.
