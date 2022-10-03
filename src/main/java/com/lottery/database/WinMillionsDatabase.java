@@ -8,7 +8,7 @@ public class WinMillionsDatabase {
 
   public static void main(String[] args) {
 
-    final String filename = "ThisIsMyTextFile.txt";
+    final String filename = "C:\\TestingMillions\\MegaMillionsTestData.csv";
 
     try {
       var myFileObject = new FileInputStream(filename);
