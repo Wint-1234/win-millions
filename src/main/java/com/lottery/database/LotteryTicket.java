@@ -3,9 +3,9 @@ package com.lottery.database;
 import java.sql.Date;
 
 public class LotteryTicket implements Comparable<LotteryTicket> {
-  private Date date;
-  private int[] lotteryNumbers;
-  private int megaBallNumber;
+  private final Date date;
+  private final int[] lotteryNumbers;
+  private final int megaBallNumber;
 
   public LotteryTicket(Date date, int[] lotteryNumbers, int megaBallNumber){
     this.date = date;
@@ -16,5 +16,13 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
   @Override
   public int compareTo(LotteryTicket other) {
     return this.date.compareTo(other.date);
+  }
+
+  public int[] getLotteryNumbers() {
+    return lotteryNumbers;
+  }
+
+  public int getMegaBallNumber() {
+    return megaBallNumber;
   }
 }
