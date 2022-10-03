@@ -1,5 +1,7 @@
-# Team Project
+Project Title:
 
-This is a template used as a starter project/repository for the team project executed in week 6.
+•	Win Millions! Lottery Number Predictor
 
-Replace this content with a summary description of the actual project repository.
+Project Summary:
+
+This application aims to attempt to predict future winning lottery numbers. The app will start small initially, with just the Mega Millions, and it will base its predictions on historical drawings. In addition to providing calculated number sets, the lottery number predictor will also aim to educate users on numerous ways to win money in a Mega Millions drawing.
