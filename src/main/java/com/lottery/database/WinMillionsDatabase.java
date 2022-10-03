@@ -16,6 +16,7 @@ public class WinMillionsDatabase {
       while ((myData = myFileObject.read()) != -1) {
         System.out.print((char) myData);
 
+
       }
     } catch (Exception ex) {
       System.out.println("Your data sucks!");
