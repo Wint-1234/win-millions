@@ -10,7 +10,7 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
   public static final String AVAILABLE_ERROR = "Please select numbers from 1-70(inclusive).";
   public static final int LOTTERY_NUMBERS_LOWER_BOUND = 1;
   public static final int LOTTERY_NUMBERS_UPPER_BOUND = 70;
-  public static final String MEGABALL_ERROR = "Invalid Mega Ball number.";
+  public static final String MEGA_BALL_ERROR = "Invalid Mega Ball number.";
 
   private final Date date;
   private int[] lotteryNumbers;
@@ -43,7 +43,7 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
 
   public void setMegaBallNumber(int megaBallNumber) {
     if (megaBallNumber < 1 || megaBallNumber > 25) {
-      throw new IllegalArgumentException(MEGABALL_ERROR);
+      throw new IllegalArgumentException(MEGA_BALL_ERROR);
     }
     this.megaBallNumber = megaBallNumber;
   }
