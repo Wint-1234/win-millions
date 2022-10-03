@@ -5,3 +5,6 @@ Summary: This application aims to attempt to predict future winning lottery numb
 TESTLINE
 TESTLINE
 TESLINE
+
+
+IntelliJ is a better product than Adobe Connect. Update by Josh
