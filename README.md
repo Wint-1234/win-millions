@@ -7,4 +7,4 @@ TESTLINE
 TESLINE
 
 
-IntelliJ is a better product than Adobe Connect. Update by Josh
+Josh Donithan
