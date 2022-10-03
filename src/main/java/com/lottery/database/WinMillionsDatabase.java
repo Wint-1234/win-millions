@@ -1,7 +1,5 @@
 package com.lottery.database;
 
-import java.io.FileInputStream;
-
 import java.io.*;
 
 public class WinMillionsDatabase {
@@ -12,6 +10,7 @@ public class WinMillionsDatabase {
 
     try {
       var myFileObject = new FileInputStream(filename);
+
 
       int myData;
       while ((myData = myFileObject.read()) != -1) {
