@@ -1,11 +1,32 @@
 package com.lottery.megamillions.controller;
 
-public class Menu {
+import java.util.Scanner;
 
-  private int test;
+public class Menu {
+  public static final int EXIT_CODE = 0;
+
+  private int userInput = 99;
 
   public Menu(){
-    test = 0;
+    System.out.println("Welcome to Win Millions!");
+    System.out.println("");
+  }
+
+  public void run(){
+    Scanner input = new Scanner(System.in);
+
+    while(userInput != EXIT_CODE){
+      startingMenu();
+
+      if(input.hasNextInt()){
+        userInput = input.nextInt();
+      } else if (userInput < 0 || userInput > 7){
+        System.out.println("Enter a number between 0 and 7");
+      } else {
+        System.out.println("Enter a number between 0 and 7");
+      }
+    }
+
   }
 
   public void startingMenu(){
