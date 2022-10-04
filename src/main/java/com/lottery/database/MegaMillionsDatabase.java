@@ -54,7 +54,6 @@ public class MegaMillionsDatabase {
 
       // Get Mega/Money Ball from line and parse into int
       int colon = line.indexOf(":");
-      System.out.println(line.length());
       int ball = Integer.parseInt(line.substring(colon + 1).trim());
 
       // Create lottery ticket and add it to the list.
