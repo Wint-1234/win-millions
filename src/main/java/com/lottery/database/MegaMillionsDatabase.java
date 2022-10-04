@@ -67,4 +67,8 @@ public class MegaMillionsDatabase {
     lotteryTickets.add(lotteryTicket);
   }
 
+  public List<LotteryTicket> getLotteryTickets() {
+    return lotteryTickets;
+  }
+
 }
