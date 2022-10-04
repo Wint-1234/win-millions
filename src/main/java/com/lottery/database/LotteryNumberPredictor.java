@@ -1,7 +1,6 @@
 package com.lottery.database;
 
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,21 +12,30 @@ public class LotteryNumberPredictor {
     this.database = new MegaMillionsDatabase().getLotteryTickets();
   }
 
-  public List<LotteryTicket> findByMonth(int month) {
+  public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
+    if (month < 0 || month > 11) {
+      throw new IllegalArgumentException();
+    }
     return database
         .stream()
         .filter(lotteryTicket -> lotteryTicket.getDate().getMonth() == month)
         .collect(Collectors.toList());
   }
 
-  public List<LotteryTicket> findByYear(int year) {
+  public List<LotteryTicket> findByYear(int year) throws IllegalArgumentException {
+    if (year < 2017 || year > 2022) {
+      throw new IllegalArgumentException();
+    }
     return database
         .stream()
         .filter(lotteryTicket -> lotteryTicket.getDate().getYear() == year)
         .collect(Collectors.toList());
   }
 
-  public List<LotteryTicket> findByNumbers(int[] numbers) {
+  public List<LotteryTicket> findByNumbers(int[] numbers) throws NullPointerException {
+    if (numbers == null) {
+      throw new NullPointerException();
+    }
     return database
         .stream()
         .filter(lotteryTicket -> containsNumbers(lotteryTicket.getLotteryNumbers(), numbers))
@@ -44,7 +52,11 @@ public class LotteryNumberPredictor {
     return null;
   }
 
-  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
+  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
+      throws NullPointerException {
+    if (numberArray == null || numbersToCheck == null) {
+      throw new NullPointerException();
+    }
     var listArray = List.of(numberArray);
     for (int value: numbersToCheck) {
       if (!listArray.contains(value)) {
