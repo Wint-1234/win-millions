@@ -1,6 +1,8 @@
 package com.lottery.megamillions.controller;
 
+import com.lottery.database.LotteryNumberPredictor;
 import com.lottery.database.LotteryTicket;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,23 +11,37 @@ public class Menu {
 
   public static final int EXIT_CODE = 0;
   public static final int MENU_MAX_VALUE = 7;
-  public static final int CART_MIN_VALUE = 1;
   public static final int CART_MAX_VALUE = 2;
+  public static final int PREDICT_MAX_VALUE = 4;
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
+  public static final int PREDICT_CHOICE = 2;
+  public static final int REPEATED_CHOICE = 3;
+  public static final int DAY_CHOICE = 4;
+  public static final int TOP_CHOICE = 5;
+  public static final int WAYS_TO_WIN_CHOICE = 6;
+  public static final int HISTORY_CHOICE = 7;
+  public static final int YEAR_ID = 8;
+
+  public static final int EARLIEST_YEAR = 2017;
+  public static final int LATEST_YEAR = 2022;
+  public static final int EARLIEST_MONTH = 0;
+  public static final int LATEST_MONTH = 0;
 
   private Cart userCart = new Cart();
   private List<LotteryTicket> userTickets = new ArrayList<>();
-
+  private LotteryNumberPredictor database = new LotteryNumberPredictor();
+  private final String standardInputMessage = "Please enter a number %d to %d:%n";
+  private final String standardInputError = "Error, enter a number %d to %d.";
   // Startup message to the program.
-  public Menu() {
+  public Menu() throws FileNotFoundException {
     System.out.println("----------Welcome to Win Millions!----------\n");
   }
 
   // Returns the userInput of a menu choice 0 to 7.
   public int runMenu() {
     Scanner input = new Scanner(System.in);
-    String invalidMessage = String.format("Error, enter a number %d to %d.", EXIT_CODE,
+    String invalidMessage = String.format(standardInputError, EXIT_CODE,
         MENU_MAX_VALUE);
     int userInput = MENU_CHOICE;
     startingMenu();
@@ -44,11 +60,10 @@ public class Menu {
     System.out.println("6. Display Ways to Win in Mega Millions");
     System.out.println("7. Display Mega Millions History");
     System.out.println("0. Exit.");
-    System.out.println("Please enter a value 0 - 7:");
+    System.out.printf(standardInputMessage, EXIT_CODE, MENU_MAX_VALUE);
   }
 
-  // there is no exit currently, compensate for empty selection or cart?
-  // problem with exit 0 choice
+  // change to just create message/display cart?
   public int createCart(){
     System.out.println("Created cart.");
     System.out.println("Current cart: " + userCart);
@@ -56,9 +71,11 @@ public class Menu {
 
     System.out.println("1. Add selected drawings to cart.");
     System.out.println("2. Return to Menu.");
-    System.out.printf("Please enter a number %d to %d:%n",CART_MIN_VALUE,CART_MAX_VALUE);
+    System.out.println("0. Close Program.");
 
-    String invalidMessage = String.format("Error, enter a number %d to %d.", CART_MIN_VALUE, CART_MAX_VALUE);
+    System.out.printf(standardInputMessage ,EXIT_CODE,CART_MAX_VALUE);
+
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, CART_MAX_VALUE);
     Scanner input = new Scanner(System.in);
     int userInput = MENU_CHOICE;
 
@@ -71,12 +88,46 @@ public class Menu {
       System.out.println("Tickets added.");
       userInput = MENU_CHOICE;
     }
-    return userInput;
+    return MENU_CHOICE;
   }
 
   public int predictNumbers(){
     System.out.println("Predicting Numbers.");
     // TODO: 10/4/2022 need implementation, this is place holder.
+    System.out.println("1. Find by year.");
+    System.out.println("2. Find by month.");
+    System.out.println("3. Find by day.");
+    System.out.println("4. Enter custom values.");
+    System.out.println("0. Close Program.");
+    System.out.printf(standardInputMessage , EXIT_CODE, PREDICT_MAX_VALUE);
+
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, PREDICT_MAX_VALUE);
+    Scanner input = new Scanner(System.in);
+    int userInput = MENU_CHOICE;
+
+    userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
+
+    // TODO: 10/4/2022 requires adding of intricate IDs for boundsCheck() params and isValidChoice()
+    switch (userInput){
+      case 1: //this is year
+        System.out.println("Enter a year from 2017 to 2022.");
+        String invalidMessageYear = String.format(standardInputError,EARLIEST_YEAR,LATEST_YEAR);
+        int yearInput = boundsCheck(YEAR_ID, invalidMessageYear, input);
+        userTickets = database.findByYear(yearInput);
+        userCart.addTicketList(userTickets);
+        System.out.println(userCart);
+        break;
+      case 2: //this is month
+        break;
+      case 3: // this is day
+        break;
+      case 4: // this is custom values
+        break;
+      case 0:
+        break;
+      default:
+
+    }
 
     return MENU_CHOICE;
   }
@@ -97,6 +148,8 @@ public class Menu {
   public int topWinningNumbers(){
     System.out.println("Top winning numbers, from choice of 10 or 5.");
     // TODO: 10/4/2022 need imp
+    // for the method getTopXXXX() should return a list of the respective top numbers
+    // need to iterate over and pull the value from the list. with .getNumber
     return  MENU_CHOICE;
   }
 
@@ -110,6 +163,10 @@ public class Menu {
     System.out.println("History of the Mega Millions.");
     // TODO: 10/4/2022 need imp
     return MENU_CHOICE;
+  }
+
+  private void addToCart(){
+
   }
 
   // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
@@ -135,26 +192,29 @@ public class Menu {
       case MENU_CHOICE:
         result = choice >= EXIT_CODE && choice <= MENU_MAX_VALUE;
         break;
-      case 1:
-        result = choice == CART_MIN_VALUE || choice == CART_MAX_VALUE;
+      case CART_CHOICE:
+        result = choice >= EXIT_CODE && choice <= CART_MAX_VALUE;
         break;
-      case 2:
+      case PREDICT_CHOICE:
+        result = choice >= EXIT_CODE && choice <= PREDICT_MAX_VALUE;
+        break;
+      case REPEATED_CHOICE:
         result = false;
         break;
-      case 3:
+      case DAY_CHOICE:
         result = false;
         break;
-      case 4:
+      case TOP_CHOICE:
         result = false;
         break;
-      case 5:
+      case WAYS_TO_WIN_CHOICE:
         result = false;
         break;
-      case 6:
+      case HISTORY_CHOICE:
         result = false;
         break;
-      case 7:
-        result = false;
+      case YEAR_ID:
+        result = choice >= EARLIEST_YEAR && choice <= LATEST_YEAR;
         break;
       default:
         result = false;
