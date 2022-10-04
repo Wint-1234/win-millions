@@ -9,7 +9,7 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
   public static final String CHOOSE_5_ERROR = "You must choose 5 numbers.";
   public static final String AVAILABLE_ERROR = "Please select numbers from 1-70(inclusive).";
   public static final int LOTTERY_NUMBERS_LOWER_BOUND = 1;
-  public static final int LOTTERY_NUMBERS_UPPER_BOUND = 70;
+  public static final int LOTTERY_NUMBERS_UPPER_BOUND = 75;
   public static final String MEGA_BALL_ERROR = "Invalid Mega Ball number.";
 
   private final Date date;
