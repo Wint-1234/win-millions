@@ -24,7 +24,7 @@ class LotteryTicketTest {
     int[] lottoNumbers = new int[]{-1, 2, 3, 4, 5};
     int megaBall = 6;
     assertThrows(IllegalArgumentException.class, () -> {
-      LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
       ticket.setLotteryNumbers(lottoNumbers);
     });
   }
@@ -33,10 +33,10 @@ class LotteryTicketTest {
 
   @Test
   void testSetLotteryNumbers_fail() {
-    int[] lottoNumbers = new int[]{1,2,3,4};
+    int[] lottoNumbers = new int[]{1, 2, 3, 4};
     int megaBall = 6;
     assertThrows(IllegalArgumentException.class, () -> {
-      LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
       ticket.setLotteryNumbers(lottoNumbers);
     });
   }
@@ -45,9 +45,9 @@ class LotteryTicketTest {
 
   @Test
   void setMegaBallNumber_pass() {
-    int[] lottoNumbers = new int[]{1,2,3,4,5};
+    int[] lottoNumbers = new int[]{1, 2, 3, 4, 5};
     int megaBall = 6;
-    LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+    LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
     ticket.setMegaBallNumber(megaBall);
   }
 
@@ -55,21 +55,33 @@ class LotteryTicketTest {
 
   @Test
   void setMegaBallNumber_fail() {
-    int[] lottoNumbers = new int[]{1,2,3,4,5}
-        int megaBall = 6;
-    LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
-    assertArrayEquals(lottoNumbers, ticket.getLotteryNumbers());
+    int[] lottoNumbers = new int[]{1, 2, 3, 4, 5}
+    int megaBall = 26;
+    assertThrows(IllegalArgumentException.class, () -> {
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
+      ticket.setMegaBallNumber(megaBall);
+    });
+
+    /* Test case will assert lottoNumbers being passed equals value for getLotteryNumbers(). */
+
+    @Test
+    void getLotteryNumbers() {
+      int[] lottNumbers = new int[]{1, 2, 3, 4, 5};
+      int megaBall = 6;
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
+      assertArrayEquals(lottNumbers, ticket.getLotteryNumbers());
+    }
+
+    /* Test case will assert megaBall being passed equals value for getMegaBallNumber(). */
+
+    @Test
+    void getMegaBallNumber() {
+      int[] lottNumbers = new int[]{1, 2, 3, 4, 5};
+      int megaBall = 6;
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
+      assertEquals(megaBall, ticket.getMegaBallNumber());
+    }
   }
-
-
-
-
-
-
-
-
-
-
 
 
 }
