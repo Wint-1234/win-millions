@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Cart {
 
-  private List<LotteryTicket> wantedTickets;
+  private List<LotteryTicket> wantedTickets = new ArrayList<>();
 
   public void addTicket(int[] numbers, int megaBall){
     wantedTickets.add(new LotteryTicket(numbers,megaBall));
