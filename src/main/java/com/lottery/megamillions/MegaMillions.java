@@ -4,6 +4,9 @@ import com.lottery.database.MegaMillionsDatabase;
 import com.lottery.megamillions.controller.Menu;
 import java.io.FileNotFoundException;
 
+/**
+ * Main class that operates the Menu class that reads/displays user input
+ */
 public class MegaMillions {
   public static final int EXIT_CODE = 0;
   public static final int MENU_CHOICE = 99;
