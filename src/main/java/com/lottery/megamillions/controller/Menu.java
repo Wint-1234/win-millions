@@ -9,10 +9,8 @@ import java.util.Scanner;
 
 public class Menu {
 
+  // Top level menu selection that is in main.
   public static final int EXIT_CODE = 0;
-  public static final int MENU_MAX_VALUE = 7;
-  public static final int CART_MAX_VALUE = 2;
-  public static final int PREDICT_MAX_VALUE = 4;
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
   public static final int PREDICT_CHOICE = 2;
@@ -21,18 +19,26 @@ public class Menu {
   public static final int TOP_CHOICE = 5;
   public static final int WAYS_TO_WIN_CHOICE = 6;
   public static final int HISTORY_CHOICE = 7;
-  public static final int YEAR_ID = 8;
 
+  // Top bounds values that is for invalidMessage local values, which is passed in boundsCheck()
+  public static final int MENU_MAX_VALUE = 7;
+  public static final int CART_MAX_VALUE = 2;
+  public static final int PREDICT_MAX_VALUE = 4;
   public static final int EARLIEST_YEAR = 2017;
   public static final int LATEST_YEAR = 2022;
   public static final int EARLIEST_MONTH = 0;
   public static final int LATEST_MONTH = 0;
 
+  // this is exclusive towards the predictNumbers() method to be passsed into the boundsCheck() method.
+  public static final int YEAR_ID = 8;
+
+
   private Cart userCart = new Cart();
   private List<LotteryTicket> userTickets = new ArrayList<>();
-  private LotteryNumberPredictor database = new LotteryNumberPredictor();
+  private final LotteryNumberPredictor database = new LotteryNumberPredictor();
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
+
   // Startup message to the program.
   public Menu() throws FileNotFoundException {
     System.out.println("----------Welcome to Win Millions!----------\n");
@@ -51,6 +57,9 @@ public class Menu {
     return userInput;
   }
 
+  /*--------------   Methods below are in order of menu selection untill next comment seperator         ----------- */
+
+  // maybe remove and add contents to runMenu().
   public void startingMenu() {
     System.out.println("1. Create lottery numbers cart.");
     System.out.println("2. Predict numbers for me.");
@@ -91,9 +100,9 @@ public class Menu {
     return MENU_CHOICE;
   }
 
+  //currently has issues withgetting year prediction and adding it to userCart
   public int predictNumbers(){
     System.out.println("Predicting Numbers.");
-    // TODO: 10/4/2022 need implementation, this is place holder.
     System.out.println("1. Find by year.");
     System.out.println("2. Find by month.");
     System.out.println("3. Find by day.");
@@ -169,6 +178,7 @@ public class Menu {
 
   }
 
+  /*     -----------          helper methods for bounds                                                    -------------        */
   // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
   private int boundsCheck(int id, String invalidMessage, Scanner input){
     int userInput = MENU_CHOICE;
