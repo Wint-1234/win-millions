@@ -12,7 +12,7 @@ public class LotteryNumberPredictor {
     this.database = new MegaMillionsDatabase().getLotteryTickets();
   }
 
-  public List<LotteryTicket> findByMonth(int month) {
+  public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
     if (month < 0 || month > 11) {
       throw new IllegalArgumentException();
     }
@@ -22,7 +22,7 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
-  public List<LotteryTicket> findByYear(int year) {
+  public List<LotteryTicket> findByYear(int year) throws IllegalArgumentException {
     if (year < 2017 || year > 2022) {
       throw new IllegalArgumentException();
     }
@@ -32,7 +32,7 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
-  public List<LotteryTicket> findByNumbers(int[] numbers) {
+  public List<LotteryTicket> findByNumbers(int[] numbers) throws NullPointerException {
     if (numbers == null) {
       throw new NullPointerException();
     }
@@ -52,7 +52,8 @@ public class LotteryNumberPredictor {
     return null;
   }
 
-  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
+  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
+      throws NullPointerException {
     if (numberArray == null || numbersToCheck == null) {
       throw new NullPointerException();
     }
