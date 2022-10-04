@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class MegaMillionsDatabase {
 
   private List<LotteryTicket> lotteryTickets = new ArrayList<>();
+  private int[] lotteryNumbersCount = new int[71];
+  private int[] megaBallCount = new int[26];
 
   public MegaMillionsDatabase() throws FileNotFoundException {
     readFile();
@@ -58,7 +60,15 @@ public class MegaMillionsDatabase {
       // Create lottery ticket and add it to the list.
       LotteryTicket lotteryTicket = new LotteryTicket(date, numberArray, ball);
       addToList(lotteryTicket);
+      incrementCounts(numberArray, ball);                           // Update appearance(s) count
     }
+  }
+
+  private void incrementCounts(int[] numberArray, int megaBall) {
+    for (int value : numberArray) {
+      lotteryNumbersCount[value] = lotteryNumbersCount[value] + 1;
+    }
+    megaBallCount[megaBall] = megaBallCount[megaBall] + 1;
   }
 
   private void addToList(LotteryTicket lotteryTicket) throws NullPointerException {
@@ -72,4 +82,11 @@ public class MegaMillionsDatabase {
     return lotteryTickets;
   }
 
+  public int[] getLotteryNumbersCount() {
+    return lotteryNumbersCount;
+  }
+
+  public int[] getMegaBallCount() {
+    return megaBallCount;
+  }
 }
