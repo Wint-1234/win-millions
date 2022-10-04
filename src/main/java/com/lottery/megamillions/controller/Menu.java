@@ -5,8 +5,7 @@ import java.util.Scanner;
 public class Menu {
 
   public static final int EXIT_CODE = 0;
-
-  private int userInput = 99;
+  public static final int MAX_MENU_VALUE = 7;
 
   // Startup message to the program.
   public Menu() {
@@ -14,12 +13,11 @@ public class Menu {
     System.out.println("");
   }
 
-  // only exits on 0
-  // Potentionally change the return type to return to the menu to so the Menu object can call other methods.
-  public void run() {
+  // Returns the userInput of a menu choice 0 to 7.
+  public int runMenu() {
     Scanner input = new Scanner(System.in);
-
-    while (userInput != EXIT_CODE) {
+    int userInput = 99;
+    while (!isValidMenuChoice(userInput)) {
       startingMenu();
 
       while(!input.hasNextInt()){
@@ -27,7 +25,7 @@ public class Menu {
         input.next();
       }
       userInput = input.nextInt();
-      if(userInput < 0 || userInput > 7){
+      if(!isValidMenuChoice(userInput)){
         System.out.println("Please enter a number 0 to 7.");
         input.next();
       }
@@ -35,7 +33,11 @@ public class Menu {
 
 
     }
+    return userInput;
+  }
 
+  public boolean isValidMenuChoice(int choice){
+    return choice >= EXIT_CODE && choice <= MAX_MENU_VALUE;
   }
 
   public void startingMenu() {
