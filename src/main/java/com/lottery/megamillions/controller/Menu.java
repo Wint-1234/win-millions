@@ -8,10 +8,11 @@ import java.util.Scanner;
 public class Menu {
 
   public static final int EXIT_CODE = 0;
-  public static final int MAX_MENU_VALUE = 7;
+  public static final int MENU_MAX_VALUE = 7;
   public static final int CART_MIN_VALUE = 1;
   public static final int CART_MAX_VALUE = 2;
   public static final int MENU_CHOICE = 99;
+  public static final int CART_CHOICE = 1;
 
   private Cart userCart = new Cart();
   private List<LotteryTicket> userTickets = new ArrayList<>();
@@ -24,28 +25,14 @@ public class Menu {
   // Returns the userInput of a menu choice 0 to 7.
   public int runMenu() {
     Scanner input = new Scanner(System.in);
+    String invalidMessage = String.format("Error, enter a number %d to %d.", EXIT_CODE,
+        MENU_MAX_VALUE);
     int userInput = MENU_CHOICE;
-    while (!isValidMenuChoice(userInput)) {
-      startingMenu();
+    startingMenu();
 
-      while(!input.hasNextInt()){
-        System.out.println("Please enter a number 0 to 7.");
-        input.next();
-      }
-      userInput = input.nextInt();
-      if(!isValidMenuChoice(userInput)){
-        System.out.println("Please enter a number 0 to 7.");
-        input.next();
-      }
-      // TODO: 10/3/2022 add a method for userInput to call a necessary function?
+    userInput = boundsCheck(MENU_CHOICE, invalidMessage, input);
 
-
-    }
     return userInput;
-  }
-
-  public boolean isValidMenuChoice(int choice){
-    return choice >= EXIT_CODE && choice <= MAX_MENU_VALUE;
   }
 
   public void startingMenu() {
@@ -57,6 +44,7 @@ public class Menu {
     System.out.println("6. Display Ways to Win in Mega Millions");
     System.out.println("7. Display Mega Millions History");
     System.out.println("0. Exit.");
+    System.out.println("Please enter a value 0 - 7:");
   }
 
   // there is no exit currently, compensate for empty selection or cart?
@@ -68,22 +56,13 @@ public class Menu {
 
     System.out.println("1. Add selected drawings to cart.");
     System.out.println("2. Return to Menu.");
+    System.out.printf("Please enter a number %d to %d:%n",CART_MIN_VALUE,CART_MAX_VALUE);
 
-    String invalidMessage = String.format("Please enter a number %d to %d.", CART_MIN_VALUE, CART_MAX_VALUE);
+    String invalidMessage = String.format("Error, enter a number %d to %d.", CART_MIN_VALUE, CART_MAX_VALUE);
     Scanner input = new Scanner(System.in);
     int userInput = MENU_CHOICE;
-    while(!isValidCartChoice(userInput)){
-      //cartMenu();
-      while (!input.hasNextInt()){
-        System.out.println(invalidMessage);
-        input.next();
-      }
-      userInput = input.nextInt();
-      if(!isValidCartChoice(userInput)){
-        System.out.println(invalidMessage);
-        input.next();
-      }
-    }
+
+    userInput = boundsCheck(CART_CHOICE,invalidMessage, input);
 
     if(userInput == 1){
       for (LotteryTicket ticket: userTickets) {
@@ -95,7 +74,54 @@ public class Menu {
     return userInput;
   }
 
-  public boolean isValidCartChoice(int choice){
-    return choice == CART_MIN_VALUE || choice == CART_MAX_VALUE;
+  // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
+  private int boundsCheck(int id, String invalidMessage, Scanner input){
+    int userInput = MENU_CHOICE;
+    while(!isValidChoice(userInput, id)){
+      while (!input.hasNextInt()){
+        System.out.println("Non Number " + invalidMessage);
+        input.next();
+      }
+      userInput = input.nextInt();
+      if(!isValidChoice(userInput, id)){
+        System.out.println("Bounds " + invalidMessage);
+      }
+    }
+    return  userInput;
+  }
+
+  // checks for valid choice. choice is what entered. id is corrasponds to overall menu selection.(enum?)
+  private boolean isValidChoice(int choice, int id){
+    boolean result = false;
+    switch (id){
+      case MENU_CHOICE:
+        result = choice >= EXIT_CODE && choice <= MENU_MAX_VALUE;
+        break;
+      case 1:
+        result = choice == CART_MIN_VALUE || choice == CART_MAX_VALUE;
+        break;
+      case 2:
+        result = false;
+        break;
+      case 3:
+        result = false;
+        break;
+      case 4:
+        result = false;
+        break;
+      case 5:
+        result = false;
+        break;
+      case 6:
+        result = false;
+        break;
+      case 7:
+        result = false;
+        break;
+      default:
+        result = false;
+        break;
+    }
+    return  result;
   }
 }
