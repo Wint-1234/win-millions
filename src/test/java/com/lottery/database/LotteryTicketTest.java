@@ -34,7 +34,42 @@ class LotteryTicketTest {
   @Test
   void testSetLotteryNumbers_fail() {
     int[] lottoNumbers = new int[]{1,2,3,4};
-    int
+    int megaBall = 6;
+    assertThrows(IllegalArgumentException.class, () -> {
+      LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+      ticket.setLotteryNumbers(lottoNumbers);
+    });
   }
+
+  /* Test case will pass due to MegaBall number within expected range. */
+
+  @Test
+  void setMegaBallNumber_pass() {
+    int[] lottoNumbers = new int[]{1,2,3,4,5};
+    int megaBall = 6;
+    LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+    ticket.setMegaBallNumber(megaBall);
+  }
+
+  /* Test Case should fail due to megaBall number out of expected range. */
+
+  @Test
+  void setMegaBallNumber_fail() {
+    int[] lottoNumbers = new int[]{1,2,3,4,5}
+        int megaBall = 6;
+    LotteryTicket ticket = new LotteryTicket(lottoNumbers,megaBall);
+    assertArrayEquals(lottoNumbers, ticket.getLotteryNumbers());
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 }
