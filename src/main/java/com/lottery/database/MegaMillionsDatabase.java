@@ -3,12 +3,13 @@ package com.lottery.database;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class MegaMillionsDatabase {
 
-  private List<LotteryTicket> lotteryTickets;
+  private List<LotteryTicket> lotteryTickets = new ArrayList<>();
 
   public MegaMillionsDatabase() throws FileNotFoundException {
     readFile();
@@ -51,7 +52,6 @@ public class MegaMillionsDatabase {
 
       // Get Mega/Money Ball from line and parse into int
       int colon = line.indexOf(":");
-      System.out.println(line.length());
       int ball = Integer.parseInt(line.substring(colon + 1).trim());
 
       // Create lottery ticket and add it to the list.
