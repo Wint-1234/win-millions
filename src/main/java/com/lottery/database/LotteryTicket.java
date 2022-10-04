@@ -49,6 +49,11 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
   }
 
   @Override
+  public String toString(){
+    return Arrays.toString(getLotteryNumbers()) + " " + getMegaBallNumber();
+  }
+
+  @Override
   public int compareTo(LotteryTicket other) {
     return this.date.compareTo(other.date);
   }

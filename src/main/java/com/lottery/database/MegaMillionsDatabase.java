@@ -9,9 +9,9 @@ import java.util.Scanner;
 public class MegaMillionsDatabase {
   private List<LotteryTicket> lotteryTickets;
 
-  public static void main(String[] args) throws FileNotFoundException {
-    readFile();
-  }
+//  public static void main(String[] args) throws FileNotFoundException {
+//    readFile();
+//  }
 
 
   public static void readFile() throws FileNotFoundException {
