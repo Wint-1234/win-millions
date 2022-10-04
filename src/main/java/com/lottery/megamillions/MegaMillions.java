@@ -21,7 +21,7 @@ public class MegaMillions {
         default:
           choice = menu.runMenu();
       }
-      choice = menu.runMenu(); // runs the main menu and asks the user for input. change this?
+      //choice = menu.runMenu(); // runs the main menu and asks the user for input. change this?
     }
 
 
