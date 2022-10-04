@@ -74,6 +74,44 @@ public class Menu {
     return userInput;
   }
 
+  public int predictNumbers(){
+    System.out.println("Predicting Numbers.");
+    // TODO: 10/4/2022 need implementation, this is place holder.
+
+    return MENU_CHOICE;
+  }
+
+  public int repeatedNumbers(){
+    System.out.println("Repeated Mega Ball Winning Numbers.");
+    // TODO: 10/4/2022 need imp
+    return MENU_CHOICE;
+  }
+
+  public int winningDay(){
+    System.out.println("Winning numbers on a particular day.");
+    // TODO: 10/4/2022 need imp
+
+    return MENU_CHOICE;
+  }
+
+  public int topWinningNumbers(){
+    System.out.println("Top winning numbers, from choice of 10 or 5.");
+    // TODO: 10/4/2022 need imp
+    return  MENU_CHOICE;
+  }
+
+  public int waysToWin(){
+    System.out.println("Ways to win the Mega Ball.");
+    // TODO: 10/4/2022 need imp
+    return MENU_CHOICE;
+  }
+
+  public int displayHistory(){
+    System.out.println("History of the Mega Millions.");
+    // TODO: 10/4/2022 need imp
+    return MENU_CHOICE;
+  }
+
   // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
   private int boundsCheck(int id, String invalidMessage, Scanner input){
     int userInput = MENU_CHOICE;
