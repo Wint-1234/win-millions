@@ -7,6 +7,8 @@ public class Menu {
   public static final int EXIT_CODE = 0;
   public static final int MAX_MENU_VALUE = 7;
 
+  public Cart userCart;
+
   // Startup message to the program.
   public Menu() {
     System.out.println("----------Welcome to Win Millions!----------");
@@ -50,4 +52,6 @@ public class Menu {
     System.out.println("7. Display Mega Millions History");
     System.out.println("0. Exit.");
   }
+
+
 }
