@@ -28,7 +28,7 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
     setMegaBallNumber(megaBallNumber);
   }
 
-  private void setLotteryNumbers(int[] lotteryNumbers) {
+  void setLotteryNumbers(int[] lotteryNumbers) {
     if (lotteryNumbers.length != 5) {
       throw new IllegalArgumentException(CHOOSE_5_ERROR);
     }

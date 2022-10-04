@@ -19,7 +19,7 @@ public class WinMillionsDatabase {
 
       }
     } catch (Exception ex) {
-      System.out.println("Your data sucks!");
+      System.out.println("Your data isn't working!");
     }
 
 
