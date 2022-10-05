@@ -28,7 +28,7 @@ public class MegaMillions {
     while (choice != EXIT_CODE){
       switch (choice){
         case CART_CHOICE: // 1
-          choice = menu.createCart();
+          choice = menu.viewCart();
           break;
         case PREDICT_CHOICE: // 2
           choice = menu.predictNumbers();
