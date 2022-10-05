@@ -27,25 +27,25 @@ public class MegaMillions {
     Menu menu = new Menu();
     while (choice != EXIT_CODE){
       switch (choice){
-        case CART_CHOICE:
+        case CART_CHOICE: // 1
           choice = menu.createCart();
           break;
-        case PREDICT_CHOICE:
+        case PREDICT_CHOICE: // 2
           choice = menu.predictNumbers();
           break;
-        case MONTH_WINNER_CHOICE:
+        case MONTH_WINNER_CHOICE: // 3
           choice = menu.winnersByMonth();
           break;
-        case YEAR_WINNER_CHOICE:
+        case YEAR_WINNER_CHOICE: // 4
           choice = menu.winnersByYear();
           break;
-        case TOP_CHOICE:
+        case TOP_CHOICE: // 5
           choice = menu.topWinningNumbers();
           break;
-        case WAYS_TO_WIN_CHOICE:
+        case WAYS_TO_WIN_CHOICE: // 6
           choice = menu.waysToWin();
           break;
-        case HISTORY_CHOICE:
+        case HISTORY_CHOICE: // 7
           choice = menu.displayHistory();
           break;
         default:
