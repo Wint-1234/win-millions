@@ -24,7 +24,7 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_findByNumbers() {
-    System.out.println(predictor.findByNumbers(new int[]{9}));
+    System.out.println(predictor.findByNumbers(new int[]{9, 15}));
   }
 
   @Test

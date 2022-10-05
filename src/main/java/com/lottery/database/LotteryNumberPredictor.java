@@ -57,7 +57,7 @@ public class LotteryNumberPredictor {
     }
     return database
         .stream()
-        .filter(lotteryTicket -> containsNumbers(lotteryTicket.getLotteryNumbers(), numbers))
+        .filter(lotteryTicket -> (containsNumbers(lotteryTicket.getLotteryNumbers(), numbers)))
         .collect(Collectors.toList());
   }
 
@@ -132,9 +132,8 @@ public class LotteryNumberPredictor {
   }
 
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
-    var listArray = List.of(numberArray);
     for (int value: numbersToCheck) {
-      if (!listArray.contains(value)) {
+      if (Arrays.binarySearch(numberArray, value) < 0) {
         return false;
       }
     }
