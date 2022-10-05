@@ -61,7 +61,7 @@ public class Menu {
   String num = "5";
 
   String ball2 = "\n\n\n" +
-      "      _.a$$$$$a._\n"
+      "         _.a$$$$$a._\n"
       + "     ,$$$$MEGA$$$$$.\n"
       + "   ,$$$$MILLIONS$$$$$.\n"
       + "  d$$$$$$$$$$$$$$$$$$$b\n"
