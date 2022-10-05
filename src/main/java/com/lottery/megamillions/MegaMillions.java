@@ -53,10 +53,5 @@ public class MegaMillions {
       }
       System.out.println("Thank you for using our predictor.");
     }
-
-
-
   }
-
-
 }

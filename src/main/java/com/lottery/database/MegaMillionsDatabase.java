@@ -4,16 +4,20 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class MegaMillionsDatabase {
 
   private List<LotteryTicket> lotteryTickets = new ArrayList<>();
-  private int[] lotteryNumbersCount = new int[71];
-  private int[] megaBallCount = new int[26];
+  private Map<Integer, Integer> numbersMap;
+  private Map<Integer, Integer> megaBallMap;
 
   public MegaMillionsDatabase() throws FileNotFoundException {
+    numbersMap = new HashMap<>();
+    megaBallMap = new HashMap<>();
     readFile();
   }
 
@@ -35,7 +39,6 @@ public class MegaMillionsDatabase {
       String month = cleanDate.substring(0, dashIndex).trim();
       String day = cleanDate.substring(dashIndex + 1, secondDashIndex).trim();
       String finalDate = (year + "-" + month + "-" + day).trim();
-
       Date date = Date.valueOf(finalDate);
 
       // Get numbers from line and parse into int in order to create Array
@@ -51,23 +54,35 @@ public class MegaMillionsDatabase {
       int number4 = Integer.parseInt(numbers.substring(commaIndex3 + 1, commaIndex4).trim());
       int number5 = Integer.parseInt(numbers.substring(commaIndex4 + 1).trim());
       int[] numberArray = {number1, number2, number3, number4, number5};
+      countNumberAppearance(numberArray);         // Increment frequency count of each number
 
       // Get Mega/Money Ball from line and parse into int
       int colon = line.indexOf(":");
       int ball = Integer.parseInt(line.substring(colon + 1).trim());
+      countMegaBallAppearance(ball);
 
       // Create lottery ticket and add it to the list.
       LotteryTicket lotteryTicket = new LotteryTicket(date, numberArray, ball);
       addToList(lotteryTicket);
-      incrementCounts(numberArray, ball);                           // Update appearance(s) count
     }
   }
 
-  private void incrementCounts(int[] numberArray, int megaBall) {
+  private void countNumberAppearance(int[] numberArray) {
     for (int value : numberArray) {
-      lotteryNumbersCount[value] = lotteryNumbersCount[value] + 1;
+      if (numbersMap.containsKey(value)) {
+        numbersMap.put(value, numbersMap.get(value) + 1);
+      } else {
+        numbersMap.put(value, 1);
+      }
     }
-    megaBallCount[megaBall] = megaBallCount[megaBall] + 1;
+  }
+
+  private void countMegaBallAppearance(int value) {
+      if (megaBallMap.containsKey(value)) {
+        megaBallMap.put(value, megaBallMap.get(value) + 1);
+      } else {
+        megaBallMap.put(value, 1);
+      }
   }
 
   private void addToList(LotteryTicket lotteryTicket) throws NullPointerException {
@@ -81,11 +96,11 @@ public class MegaMillionsDatabase {
     return lotteryTickets;
   }
 
-  public int[] getLotteryNumbersCount() {
-    return lotteryNumbersCount;
+  public Map<Integer, Integer> getNumbersMap() {
+    return numbersMap;
   }
 
-  public int[] getMegaBallCount() {
-    return megaBallCount;
+  public Map<Integer, Integer> getMegaBallMap() {
+    return megaBallMap;
   }
 }
