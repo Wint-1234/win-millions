@@ -3,23 +3,19 @@ package com.lottery.database;
 import java.io.FileNotFoundException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class LotteryNumberPredictor {
 
   private final List<LotteryTicket> database;
-  private final int[] lotteryNumbersCount;
-  private final int[] megaBallCount;
-  private LinkedList<Number> numbers = new LinkedList<>();
-  private LinkedList<Number> megaBalls = new LinkedList<>();
-  private LinkedList<Number> top20Numbers = new LinkedList<>();
-  private LinkedList<Number> top10MegaBalls = new LinkedList<>();
+  private final Map<Integer, Integer> numbersMap;
+  private final Map<Integer, Integer> megaBallMap;
 
   public LotteryNumberPredictor() throws FileNotFoundException {
     this.database = new MegaMillionsDatabase().getLotteryTickets();
-    this.lotteryNumbersCount = new MegaMillionsDatabase().getLotteryNumbersCount();
-    this.megaBallCount =  new MegaMillionsDatabase().getMegaBallCount();
-    convertToLinkedList(lotteryNumbersCount, megaBallCount);
+    this.numbersMap = new MegaMillionsDatabase().getNumbersMap();
+    this.megaBallMap = new MegaMillionsDatabase().getMegaBallMap();
   }
 
   public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
@@ -52,32 +48,14 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
+  // TODO: 10/5/22
   public List<Number> getTop20Numbers() {
-    for (int i = 0; i < 20; i++) {
-      Number max = findMax(numbers);
-      top20Numbers.add(max);
-      numbers.remove(max);
-    }
-    return top20Numbers;
+    return null;
   }
 
+  // TODO: 10/5/22
   public List<Number> getTop10MegaBalls() {
-    for (int i = 0; i < 10; i++) {
-      Number max = findMax(megaBalls);
-      top10MegaBalls.add(max);
-      megaBalls.remove(max);
-    }
-    return top10MegaBalls;
-  }
-
-  private Number findMax(List<Number> numbersList) {
-    Number max = new Number(-1, -1);
-    for (Number number : numbersList) {
-      if (number.getCount() > max.getCount()) {
-        max = number;
-      }
-    }
-    return max;
+    return null;
   }
 
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
@@ -94,17 +72,5 @@ public class LotteryNumberPredictor {
     return true;
   }
 
-  private void convertToLinkedList(int[] lotteryNumbersCount, int[] megaBallCount) {
-    Number lotteryNumber;
-    Number megaBall;
 
-    for (int i = 1; i < lotteryNumbersCount.length; i++) {
-      lotteryNumber = new Number(i, lotteryNumbersCount[i]);
-      numbers.add(lotteryNumber);
-    }
-    for (int i = 1; i < megaBallCount.length; i++) {
-      megaBall = new Number(i, megaBallCount[i]);
-      megaBalls.add(megaBall);
-    }
-  }
 }
