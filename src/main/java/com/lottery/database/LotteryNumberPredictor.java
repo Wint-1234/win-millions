@@ -55,6 +55,9 @@ public class LotteryNumberPredictor {
     var top20Numbers= getTop20Numbers();
     var top10MegaBalls = getTop10MegaBalls();
 
+    // Take top 3 numbers
+
+
 
     return null;
   }
