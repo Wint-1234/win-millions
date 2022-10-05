@@ -74,7 +74,7 @@ public class Menu {
       + "     `$$$$$$$$$$$$$'\n"
       + "       `~$$$$$$$~'";
 
-  String ball2 = "\n\n\n\n\n\n\n\n"
+  String ball2 = "\n\n\n"
       + "                                                        .-\"\"\"-.\n" +
       "                                                       /   _   \\\n" +
       " ___                                                   |  (8)  |\n" +
