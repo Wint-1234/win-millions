@@ -343,8 +343,8 @@ public class Menu {
       userInput = MENU_CHOICE;
     }
     if (userInput == 1) {
-      System.out.println("Displaying Top-10 winning numbers: \n" + database.getTop20Numbers());
-      System.out.println("Displaying Top-5 Mega Ball numbers: \n" + database.getTop10MegaBalls());
+      System.out.println("Displaying Top-10 winning numbers: \n" + database.getTop10Numbers());
+      System.out.println("Displaying Top-5 Mega Ball numbers: \n" + database.getTop5MegaBalls());
       userInput = returnToMenu(input);
     }
     if (userInput < 0) {
