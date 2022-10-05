@@ -67,6 +67,6 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
 
   @Override
   public String toString(){
-    return Arrays.toString(getLotteryNumbers()) + " " + getMegaBallNumber();
+    return Arrays.toString(getLotteryNumbers()) + " (" + getMegaBallNumber() + ")\n";
   }
 }
