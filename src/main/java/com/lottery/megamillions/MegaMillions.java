@@ -12,8 +12,8 @@ public class MegaMillions {
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
   public static final int PREDICT_CHOICE = 2;
-  public static final int REPEATED_CHOICE = 3;
-  public static final int DAY_CHOICE = 4;
+  public static final int MONTH_WINNER_CHOICE = 3;
+  public static final int YEAR_WINNER_CHOICE = 4;
   public static final int TOP_CHOICE = 5;
   public static final int WAYS_TO_WIN_CHOICE = 6;
   public static final int HISTORY_CHOICE = 7;
@@ -33,11 +33,11 @@ public class MegaMillions {
         case PREDICT_CHOICE:
           choice = menu.predictNumbers();
           break;
-        case REPEATED_CHOICE:
-          choice = menu.repeatedNumbers();
+        case MONTH_WINNER_CHOICE:
+          choice = menu.winnersByMonth();
           break;
-        case DAY_CHOICE:
-          choice = menu.winningDay();
+        case YEAR_WINNER_CHOICE:
+          choice = menu.winnersByYear();
           break;
         case TOP_CHOICE:
           choice = menu.topWinningNumbers();
