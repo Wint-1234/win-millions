@@ -52,22 +52,27 @@ public class LotteryNumberPredictor {
   }
 
   public List<LotteryTicket> predictForMe() {
-    var top20Numbers= getTop20Numbers();
-    var top10MegaBalls = getTop10MegaBalls();
+    var top20Numbers= getTop20Numbers(numbersMap);
+    var top10MegaBalls = getTop10MegaBalls(megaBallMap);
 
-    // Take top 3 numbers
+    // Take top 3 numbers and search for LotteryTickets containing these numbers
+    int[] top3Numbers = new int[3];
+    for(int i = 0; i < 3; i++) {
+      top3Numbers[i] = top20Numbers.get(i);
+    }
+    var listContainingTop3Numbers = findByNumbers(top3Numbers);
 
 
 
     return null;
   }
 
-  public List<Integer> getTop20Numbers() {
-    return produceTop20Numbers();
+  public List<Integer> getTop20Numbers(Map<Integer, Integer> map) {
+    return produceTop20Numbers(map);
   }
 
-  public List<Integer> getTop10MegaBalls() {
-    return produceTop10MegaBalls();
+  public List<Integer> getTop10MegaBalls(Map<Integer, Integer> map) {
+    return produceTop10MegaBalls(map);
   }
 
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
@@ -84,15 +89,15 @@ public class LotteryNumberPredictor {
     return true;
   }
 
-  private List<Integer> produceTop20Numbers() {
+  private List<Integer> produceTop20Numbers(Map<Integer, Integer> map) {
     List<Integer> result = new ArrayList<>();                              // Top 20 Numbers
-    List<Integer> list = new ArrayList<Integer>(numbersMap.values());      // Get all values in map
+    List<Integer> list = new ArrayList<Integer>(map.values());      // Get all values in map
     Collections.sort(list);
     list = list.subList(0, 20);
 
     // Check each value in sorted list and add all numbers with value in map to result
     for (int value: list) {
-      for (Entry<Integer, Integer> entry : numbersMap.entrySet()) {
+      for (Entry<Integer, Integer> entry : map.entrySet()) {
         if (entry.getValue() == value) {
           result.add(entry.getKey());
         }
@@ -101,15 +106,15 @@ public class LotteryNumberPredictor {
     return result;
   }
 
-  private List<Integer> produceTop10MegaBalls() {
+  private List<Integer> produceTop10MegaBalls(Map<Integer, Integer> map) {
     List<Integer> result = new ArrayList<>();                              // Top 10 MegaBalls
-    List<Integer> list = new ArrayList<Integer>(megaBallMap.values());     // Get all values in map
+    List<Integer> list = new ArrayList<Integer>(map.values());     // Get all values in map
     Collections.sort(list);
     list = list.subList(0, 10);
 
     // Check each value in sorted list and add all numbers with value in map to result
     for (int value: list) {
-      for (Entry<Integer, Integer> entry : megaBallMap.entrySet()) {
+      for (Entry<Integer, Integer> entry : map.entrySet()) {
         if (entry.getValue() == value) {
           result.add(entry.getKey());
         }
