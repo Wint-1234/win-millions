@@ -14,27 +14,27 @@ public class Menu {
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
   public static final int PREDICT_CHOICE = 2;
-  public static final int REPEATED_CHOICE = 3;
-  public static final int DAY_CHOICE = 4;
+  public static final int MONTH_WINNER_CHOICE = 3;
+  public static final int YEAR_WINNER_CHOICE = 4;
   public static final int TOP_CHOICE = 5;
   public static final int WAYS_TO_WIN_CHOICE = 6;
   public static final int HISTORY_CHOICE = 7;
-
+  public static final String CLOSE_PROGRAM_MESSAGE = "0. Close Program.";
   // Top bounds values that is for invalidMessage local values, which is passed in boundsCheck()
   public static final int MENU_MAX_VALUE = 7;
   public static final int CART_MAX_VALUE = 2;
-  public static final int PREDICT_MAX_VALUE = 4;
+  public static final int PREDICT_MAX_VALUE = 2; //change?
   public static final int EARLIEST_YEAR = 2017;
   public static final int LATEST_YEAR = 2022;
-  public static final int EARLIEST_MONTH = 0;
-  public static final int LATEST_MONTH = 0;
+  public static final int EARLIEST_MONTH = 1;
+  public static final int LATEST_MONTH = 12;
 
   // this is exclusive towards the predictNumbers() method to be passsed into the boundsCheck() method.
-  public static final int YEAR_ID = 8;
+  public static final int YEAR_SIGNATURE = 8;
 
 
   private Cart userCart = new Cart();
-  private List<LotteryTicket> userTickets = new ArrayList<>();
+  private List<LotteryTicket> selectedTickets = new ArrayList<>();
   private final LotteryNumberPredictor database = new LotteryNumberPredictor();
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
@@ -68,7 +68,7 @@ public class Menu {
     System.out.println("5. Display Top 10 Winning Numbers and Top 5 Mega Ball Numbers");
     System.out.println("6. Display Ways to Win in Mega Millions");
     System.out.println("7. Display Mega Millions History");
-    System.out.println("0. Exit.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
     System.out.printf(standardInputMessage, EXIT_CODE, MENU_MAX_VALUE);
   }
 
@@ -76,11 +76,11 @@ public class Menu {
   public int createCart(){
     System.out.println("Created cart.");
     System.out.println("Current cart: " + userCart);
-    System.out.println("Selected drawings: " + userTickets);
+    System.out.println("Selected drawings: " + selectedTickets);
 
     System.out.println("1. Add selected drawings to cart.");
     System.out.println("2. Return to Menu.");
-    System.out.println("0. Close Program.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
 
     System.out.printf(standardInputMessage ,EXIT_CODE,CART_MAX_VALUE);
 
@@ -89,25 +89,25 @@ public class Menu {
     int userInput = MENU_CHOICE;
 
     userInput = boundsCheck(CART_CHOICE,invalidMessage, input);
-
+    // TODO: 10/5/2022 potentional change for method call only that is provided in cart
     if(userInput == 1){
-      for (LotteryTicket ticket: userTickets) {
-        userCart.addTicket(ticket.getLotteryNumbers(),ticket.getMegaBallNumber());
-      }
+      userCart.addTicketList(selectedTickets);
       System.out.println("Tickets added.");
       userInput = MENU_CHOICE;
+    }
+    if(userInput == 0){
+      return userInput;
     }
     return MENU_CHOICE;
   }
 
   //currently has issues withgetting year prediction and adding it to userCart
   public int predictNumbers(){
-    System.out.println("Predicting Numbers.");
-    System.out.println("1. Find by year.");
-    System.out.println("2. Find by month.");
-    System.out.println("3. Find by day.");
-    System.out.println("4. Enter custom values.");
-    System.out.println("0. Close Program.");
+    System.out.println("\nPredicting Numbers.");
+    System.out.println("Current Cart:");          //make display an option choice?
+    System.out.println(userCart);
+    System.out.println("1. Predict with custom values.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
     System.out.printf(standardInputMessage , EXIT_CODE, PREDICT_MAX_VALUE);
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, PREDICT_MAX_VALUE);
@@ -116,39 +116,36 @@ public class Menu {
 
     userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
 
-    // TODO: 10/4/2022 requires adding of intricate IDs for boundsCheck() params and isValidChoice()
-    switch (userInput){
-      case 1: //this is year
-        System.out.println("Enter a year from 2017 to 2022.");
-        String invalidMessageYear = String.format(standardInputError,EARLIEST_YEAR,LATEST_YEAR);
-        int yearInput = boundsCheck(YEAR_ID, invalidMessageYear, input);
-        userTickets = database.findByYear(yearInput);
-        userCart.addTicketList(userTickets);
-        System.out.println(userCart);
-        break;
-      case 2: //this is month
-        break;
-      case 3: // this is day
-        break;
-      case 4: // this is custom values
-        break;
-      case 0:
-        break;
-      default:
-
+    // TODO: 10/4/2022 user input for predict
+    if(userInput == 1){
+      // ask and check for user input to be predicted?
     }
-
+    if(userInput == 0){
+      return userInput;
+    }
     return MENU_CHOICE;
   }
 
-  public int repeatedNumbers(){
-    System.out.println("Repeated Mega Ball Winning Numbers.");
+  public int winnersByMonth(){// TODO: 10/5/2022 going to have to -1 to month input for method call
+    System.out.println("Winning numbers on particular month.");
+//    System.out.println("Current Cart:");
+//    System.out.println(userCart);
+    System.out.println("1. Display winning numbers by desired month.");
+    System.out.println("2. Return to main menu.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.printf(standardInputMessage, EXIT_CODE, 2);
     // TODO: 10/4/2022 need imp
     return MENU_CHOICE;
   }
 
-  public int winningDay(){
-    System.out.println("Winning numbers on a particular day.");
+  public int winnersByYear(){
+    System.out.println("Winning numbers on a particular year.");
+    //    System.out.println("Current Cart:");
+    //    System.out.println(userCart);
+    System.out.println("1. Display winning numbers by desired year.");
+    System.out.println("2. Return to main menu.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.printf(standardInputMessage, EXIT_CODE, 2);
     // TODO: 10/4/2022 need imp
 
     return MENU_CHOICE;
@@ -156,6 +153,14 @@ public class Menu {
 
   public int topWinningNumbers(){
     System.out.println("Top winning numbers, from choice of 10 or 5.");
+    //    System.out.println("Current Cart:");
+//    System.out.println(userCart);
+    System.out.println("1. Display Top-5 winning numbers.");
+    System.out.println("2. Display Top-10 winning numbers.");
+    System.out.println("3. Return to main menu.");
+    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.printf(standardInputMessage, EXIT_CODE, 3);
+
     // TODO: 10/4/2022 need imp
     // for the method getTopXXXX() should return a list of the respective top numbers
     // need to iterate over and pull the value from the list. with .getNumber
@@ -179,26 +184,26 @@ public class Menu {
   }
 
   /*     -----------          helper methods for bounds                                                    -------------        */
-  // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
-  private int boundsCheck(int id, String invalidMessage, Scanner input){
+  // checks bound, selectionSignature is the overall menu selection. invalidMessage is custom error. input is the scanner.
+  private int boundsCheck(int selectionSignature, String invalidMessage, Scanner input){
     int userInput = MENU_CHOICE;
-    while(!isValidChoice(userInput, id)){
+    while(!isValidChoice(userInput, selectionSignature)){
       while (!input.hasNextInt()){
         System.out.println("Non Number " + invalidMessage);
         input.next();
       }
       userInput = input.nextInt();
-      if(!isValidChoice(userInput, id)){
+      if(!isValidChoice(userInput, selectionSignature)){
         System.out.println("Bounds " + invalidMessage);
       }
     }
     return  userInput;
   }
 
-  // checks for valid choice. choice is what entered. id is corrasponds to overall menu selection.(enum?)
-  private boolean isValidChoice(int choice, int id){
+  // checks for valid choice. choice is what entered. selectionSignature is corrasponds to overall menu selection.(enum?)
+  private boolean isValidChoice(int choice, int selectionSignature){
     boolean result = false;
-    switch (id){
+    switch (selectionSignature){
       case MENU_CHOICE:
         result = choice >= EXIT_CODE && choice <= MENU_MAX_VALUE;
         break;
@@ -208,22 +213,23 @@ public class Menu {
       case PREDICT_CHOICE:
         result = choice >= EXIT_CODE && choice <= PREDICT_MAX_VALUE;
         break;
-      case REPEATED_CHOICE:
+      case MONTH_WINNER_CHOICE:
+        result = choice >= EXIT_CODE && choice <= 2;
         result = false;
         break;
-      case DAY_CHOICE:
-        result = false;
+      case YEAR_WINNER_CHOICE:
+        result = choice >= EXIT_CODE && choice <= 2;
         break;
       case TOP_CHOICE:
-        result = false;
+        result = choice >= EXIT_CODE && choice <= 3;
         break;
-      case WAYS_TO_WIN_CHOICE:
+      case WAYS_TO_WIN_CHOICE: // TODO: 10/5/2022 is this needed check implementation of menu selection
         result = false;
         break;
       case HISTORY_CHOICE:
         result = false;
         break;
-      case YEAR_ID:
+      case YEAR_SIGNATURE:
         result = choice >= EARLIEST_YEAR && choice <= LATEST_YEAR;
         break;
       default:
