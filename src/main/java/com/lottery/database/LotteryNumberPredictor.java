@@ -27,7 +27,7 @@ public class LotteryNumberPredictor {
     this.megaBallMap = new MegaMillionsDatabase().getMegaBallMap();
     localNumbersMap = new HashMap<>();
     top10Numbers = getTop10Numbers(numbersMap);
-    top5MegaBalls = getTop10MegaBalls(megaBallMap);
+    top5MegaBalls = getTop5MegaBalls(megaBallMap);
   }
 
   public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
@@ -123,14 +123,6 @@ public class LotteryNumberPredictor {
     return tickets;
   }
 
-  public List<Integer> getTop10Numbers(Map<Integer, Integer> map) {
-    return produceTop10Numbers(map);
-  }
-
-  public List<Integer> getTop10MegaBalls(Map<Integer, Integer> map) {
-    return produceTop5MegaBalls(map);
-  }
-
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
     for (int value: numbersToCheck) {
       if (Arrays.binarySearch(numberArray, value) < 0) {
@@ -138,6 +130,31 @@ public class LotteryNumberPredictor {
       }
     }
     return true;
+  }
+
+  private void countNumberAppearance(int[] numberArray) {
+    for (int value : numberArray) {
+      if (localNumbersMap.containsKey(value)) {
+        localNumbersMap.replace(value, localNumbersMap.get(value) + 1);
+      } else {
+        localNumbersMap.put(value, 1);
+      }
+    }
+  }
+  public List<Integer> getTop10Numbers(Map<Integer, Integer> map) {
+    return produceTop10Numbers(map);
+  }
+
+  public List<Integer> getTop5MegaBalls(Map<Integer, Integer> map) {
+    return produceTop5MegaBalls(map);
+  }
+
+  public List<Integer> getTop10Numbers() {
+    return top10Numbers;
+  }
+
+  public List<Integer> getTop5MegaBalls() {
+    return top5MegaBalls;
   }
 
   private List<Integer> produceTop10Numbers(Map<Integer, Integer> map) {
@@ -172,23 +189,5 @@ public class LotteryNumberPredictor {
       result.add(numberArray[i].getNumber());
     }
     return result;
-  }
-
-  private void countNumberAppearance(int[] numberArray) {
-    for (int value : numberArray) {
-      if (localNumbersMap.containsKey(value)) {
-        localNumbersMap.replace(value, localNumbersMap.get(value) + 1);
-      } else {
-        localNumbersMap.put(value, 1);
-      }
-    }
-  }
-
-  public List<Integer> getTop10Numbers() {
-    return top10Numbers;
-  }
-
-  public List<Integer> getTop5MegaBalls() {
-    return top5MegaBalls;
   }
 }
