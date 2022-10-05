@@ -40,7 +40,7 @@ public class LotteryNumberPredictor {
     }
     return database
         .stream()
-        .filter(lotteryTicket -> lotteryTicket.getDate().getYear() == year)
+        .filter(lotteryTicket -> (lotteryTicket.getDate().getYear() + 1900) == year)
         .collect(Collectors.toList());
   }
 
