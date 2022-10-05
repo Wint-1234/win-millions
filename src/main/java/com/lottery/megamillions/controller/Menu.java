@@ -55,52 +55,32 @@ public class Menu {
 
   // Startup message to the program.
 
-
   private final String menuBorder = "========================";
   String num = "5";
-  String Ball1 = "      _.a$$$$$a._\n"
-      + "     ,$$$$$$$$$$$$$.\n"
-      + "   ,$$$$$$$$$$$$$$$$$.\n"
+
+  String ball2 = "\n\n\n" +
+      "        _.a$$$$$a._\n"
+      + "     ,$$$$MEGA$$$$$.\n"
+      + "   ,$$$$MILLIONS$$$$$.\n"
       + "  d$$$$$$$$$$$$$$$$$$$b\n"
       + " d$$$$$$$$~'\"`~$$$$$$$$b\n"
       + "($$$$$$$p   _   q$$$$$$$)\n"
-      + "$$$$$$$$   (_)   $$$$$$$$\n"
-      + "$$$$$$$$   (_)   $$$$$$$$\n"
+      + "$$$$$$$$    $    $$$$$$$$\n"
+      + "$$$$$$$$    $    $$$$$$$$\n"
       + "($$$$$$$b       d$$$$$$$)\n"
       + " q$$$$$$$$a._.a$$$$$$$$p\n"
-      + "  q$$$$$$$$$$$$$$$$$$$p\n"
-      + "   `$$$$$$$$$$$$$$$$$'\n"
+      + "  q$$$$$$$MEGA$$$$$$p\n"
+      + "   `$$$$$MILLIONS$$$$'\n"
       + "     `$$$$$$$$$$$$$'\n"
       + "       `~$$$$$$$~'";
 
-  String ball2 = "\n\n\n"
-      + "                                                        .-\"\"\"-.\n" +
-      "                                                       /   _   \\\n" +
-      " ___                                                   |  (8)  |\n" +
-      "/\\`````````\"\"\"\"\"\"=--......................___________  \\   ^   /\n" +
-      "\\//__________________)))__________________)))________]] '-...-'";
-  private String test =
-      "                                                                                          \n"
-          +
-          "                                                                                          \n"
-          +
-          "█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗█████╗\n"
-          +
-          "╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝╚════╝";
-
-
-  String example =
-      "█████╗\n" +
-          "╚════╝";
-
-
   // Startup message to the program.
   public Menu() {
-    //System.out.println("----------Welcome to Win Millions!----------\n");
+    System.out.println("----------Welcome to Win Millions!----------\n");
   }
 
   // Returns the userInput of a menu choice 0 to 7.
-  public int runMenu() {
+  public int runMenu () {
     Scanner input = new Scanner(System.in);
     String invalidMessage = String.format(standardInputError, EXIT_CODE,
         MENU_MAX_VALUE);
