@@ -15,7 +15,6 @@ public class LotteryNumberPredictor {
   public static final int YEAR_LOWER_BOUND = 2017;
   public static final int YEAR_UPPER_BOUND = 2022;
   public static final int YEAR_OFFSET = 1900;
-  public static final int MONTH_LOWER_BOUND = 0;
   public static final int MONTH_UPPER_BOUND = 11;
   private final List<LotteryTicket> database;
   private final Map<Integer, Integer> numbersMap;
@@ -30,7 +29,7 @@ public class LotteryNumberPredictor {
   }
 
   public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
-    if (month < MONTH_LOWER_BOUND || month > MONTH_UPPER_BOUND) {
+    if (month < 0 || month > MONTH_UPPER_BOUND) {
       throw new IllegalArgumentException();
     }
     return database
@@ -53,6 +52,9 @@ public class LotteryNumberPredictor {
     if (numbers == null) {
       throw new NullPointerException();
     }
+    if (numbers.length > 5 || numbers.length == 0) {
+      throw new IllegalArgumentException();
+    }
     return database
         .stream()
         .filter(lotteryTicket -> containsNumbers(lotteryTicket.getLotteryNumbers(), numbers))
@@ -66,7 +68,7 @@ public class LotteryNumberPredictor {
 
     // Take top 3 numbers and search for LotteryTickets containing these values
     int[] top3Numbers = new int[3];
-    for(int i = MONTH_LOWER_BOUND; i < 3; i++) {
+    for(int i = 0; i < 3; i++) {
       top3Numbers[i] = top20Numbers.get(i);
     }
     var listContainingTop3Numbers = findByNumbers(top3Numbers);
@@ -93,24 +95,21 @@ public class LotteryNumberPredictor {
         break;
       }
     }
-    lotteryNumbersArray[3] = ((number4 == -1) ? top20Numbers.get(MONTH_LOWER_BOUND) : number4);
+    lotteryNumbersArray[3] = ((number4 == -1) ? top20Numbers.get(0) : number4);
     lotteryNumbersArray[4] = ((number5 == -1) ? top20Numbers.get(1) : number5);
 
     // Create 2 more arrays to create Lottery Tickets based on top values on new/old Top20
-    int[] lotteryNumbersArray2 = {newTop20Numbers.get(MONTH_LOWER_BOUND), newTop20Numbers.get(1),
+    int[] lotteryNumbersArray2 = {newTop20Numbers.get(0), newTop20Numbers.get(1),
         newTop20Numbers.get(2), newTop20Numbers.get(3), newTop20Numbers.get(4)};
-    int[] lotteryNumbersArray3 = {top20Numbers.get(MONTH_LOWER_BOUND), top20Numbers.get(1),
+    int[] lotteryNumbersArray3 = {top20Numbers.get(0), top20Numbers.get(1),
         top20Numbers.get(2), top20Numbers.get(3), top20Numbers.get(4)};
 
     // Create LotteryTickets
-    LotteryTicket ticket = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
+    LotteryTicket ticket = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(0));
     LotteryTicket ticket2 = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(1));
-    LotteryTicket ticket3 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
+    LotteryTicket ticket3 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(0));
     LotteryTicket ticket4 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(1));
-    LotteryTicket ticket5 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
+    LotteryTicket ticket5 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(0));
     LotteryTicket ticket6 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(1));
 
     // Add Tickets to List
@@ -132,11 +131,7 @@ public class LotteryNumberPredictor {
     return produceTop10MegaBalls(map);
   }
 
-  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
-      throws NullPointerException {
-    if (numberArray == null || numbersToCheck == null) {
-      throw new NullPointerException();
-    }
+  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
     var listArray = List.of(numberArray);
     for (int value: numbersToCheck) {
       if (!listArray.contains(value)) {
@@ -150,7 +145,7 @@ public class LotteryNumberPredictor {
     List<Integer> result = new ArrayList<>();                              // Top 20 Numbers
     List<Integer> list = new ArrayList<>(map.values());      // Get all values in map
     Collections.sort(list);
-    list = list.subList(MONTH_LOWER_BOUND, 20);
+    list = list.subList(0, 20);
 
     // Check each value in sorted list and add all numbers with value in map to result
     for (int value: list) {
@@ -167,7 +162,7 @@ public class LotteryNumberPredictor {
     List<Integer> result = new ArrayList<>();                              // Top 10 MegaBalls
     List<Integer> list = new ArrayList<>(map.values());     // Get all values in map
     Collections.sort(list);
-    list = list.subList(MONTH_LOWER_BOUND, 10);
+    list = list.subList(0, 10);
 
     // Check each value in sorted list and add all numbers with value in map to result
     for (int value: list) {

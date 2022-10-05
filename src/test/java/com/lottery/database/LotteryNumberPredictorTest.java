@@ -24,11 +24,12 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_findByNumbers() {
-    System.out.println(predictor.findByYear(2018));
+    System.out.println(predictor.findByNumbers(new int[]{9}));
   }
 
   @Test
   void test_findByYear() {
+    System.out.println(predictor.findByYear(2018));
   }
 
   @Test
