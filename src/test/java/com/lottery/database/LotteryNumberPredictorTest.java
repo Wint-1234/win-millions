@@ -3,6 +3,13 @@ package com.lottery.database;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.junit.jupiter.api.Test;
 
 class LotteryNumberPredictorTest {
@@ -33,11 +40,14 @@ class LotteryNumberPredictorTest {
   }
 
   @Test
-  void test_predictForMe() {
-    System.out.println(predictor.getTop20Numbers());
-    System.out.println(predictor.getTop10MegaBalls());
+  void test_predictForMe() throws FileNotFoundException {
+    MegaMillionsDatabase database = new MegaMillionsDatabase();
+    System.out.println(database.getNumbersMap());
+    System.out.println(database.getMegaBallMap());
+
+    LotteryNumberPredictor lotteryNumberPredictor = new LotteryNumberPredictor();
+    System.out.println(lotteryNumberPredictor.getTop10Numbers());
+    System.out.println(lotteryNumberPredictor.getTop5MegaBalls());
   }
-
-
 
 }
