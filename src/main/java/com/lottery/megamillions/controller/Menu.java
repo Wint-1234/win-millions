@@ -22,7 +22,7 @@ public class Menu {
   public static final String CLOSE_PROGRAM_MESSAGE = "0. Close Program.";
   // Top bounds values that is for invalidMessage local values, which is passed in boundsCheck()
   public static final int MENU_MAX_VALUE = 7;
-  public static final int CART_MAX_VALUE = 2;
+  public static final int CART_MAX_VALUE = 4;
   public static final int PREDICT_MAX_VALUE = 2; //change?
   public static final int EARLIEST_YEAR = 2017;
   public static final int LATEST_YEAR = 2022;
@@ -33,6 +33,8 @@ public class Menu {
   public static final int YEAR_SIGNATURE = 8;
   public static final int MONTH_SIGNATURE = 9;
   public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final int THREE_OPTIONS_SIGNATURE = 97;
+  public static final int FOUR_OPTIONS_SIGNATURE = 96;
 
 
   private Cart userCart = new Cart();
@@ -63,7 +65,7 @@ public class Menu {
 
   // maybe remove and add contents to runMenu().
   public void startingMenu() {
-    System.out.println("1. Create lottery numbers cart.");
+    System.out.println("1. View lottery numbers cart.");
     System.out.println("2. Predict numbers for me.");
     System.out.println("3. Display winning numbers by selected month.");
     System.out.println("4. Display winning numbers by selected year.");
@@ -75,13 +77,15 @@ public class Menu {
   }
 
   // change to just create message/display cart?
-  public int createCart(){
+  public int viewCart(){
     //System.out.println("Created cart.");
     System.out.println("Current cart: " + userCart);
     System.out.println("Selected drawings: " + selectedTickets);
 
     System.out.println("1. Add selected drawings to cart.");
-    System.out.println("2. Return to Menu.");
+    System.out.println("2. Clear selected tickets.");
+    System.out.println("3. Clear current cart.");
+    System.out.println("4. Return to Menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
 
     System.out.printf(standardInputMessage ,EXIT_CODE,CART_MAX_VALUE);
@@ -92,16 +96,32 @@ public class Menu {
 
     userInput = boundsCheck(CART_CHOICE,invalidMessage, input);
     // TODO: 10/5/2022 potentional change for method call only that is provided in cart
-    if(userInput == 1){
-      userCart.addTicketList(selectedTickets);
-      System.out.println("Tickets added.");
-      //stall
-      userInput = returnToMenu(input);
+    switch (userInput){
+      case 1:
+        userCart.addTicketList(selectedTickets);
+        selectedTickets = new ArrayList<>();
+        System.out.println("Tickets added.");
+        userInput = returnToMenu(input); //stall
+        break;
+      case 2:
+        selectedTickets = new ArrayList<>();
+        System.out.println("Selected tickets cleared.");
+        userInput = returnToMenu(input);
+        break;
+      case 3:
+        userCart = new Cart();
+        System.out.println("Cart is cleared.");
+        userInput = returnToMenu(input);
+        break;
+      case 4:
+        userInput = MENU_CHOICE;
+        break;
     }
-    if(userInput == 0){
-      return userInput;
+
+    if(userInput < 0){
+      userInput = CART_CHOICE;
     }
-    return MENU_CHOICE;
+    return userInput;
   }
 
   //currently has issues withgetting year prediction and adding it to userCart
@@ -123,10 +143,10 @@ public class Menu {
     if(userInput == 1){
       // ask and check for user input to be predicted?
     }
-    if(userInput == 0){
-      return userInput;
+    if(userInput < 0){
+      userInput = PREDICT_CHOICE;
     }
-    return MENU_CHOICE;
+    return userInput;
   }
 
   public int winnersByMonth(){// TODO: 10/5/2022 going to have to -1 to month input for method call
@@ -137,7 +157,6 @@ public class Menu {
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
     System.out.printf(standardInputMessage, EXIT_CODE, 2);
-    // TODO: 10/4/2022 need imp
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
     Scanner input = new Scanner(System.in);
@@ -147,9 +166,9 @@ public class Menu {
       System.out.println("Enter the month 1 (January) to 12 (December)");
       String invalidMessageMonth = String.format(standardInputError, EARLIEST_MONTH,LATEST_MONTH);
       int monthInput = boundsCheck(MONTH_SIGNATURE, invalidMessageMonth, input);
-      selectedTickets = database.findByMonth(monthInput - 1); // to find by 0-11
-//selectedTickets = database.findByYear(yearInput);
-      // TODO: 10/5/2022 create method to display month by string value not int
+      selectedTickets.addAll(database.findByMonth(monthInput - 1));
+      //selectedTickets = database.findByMonth(monthInput - 1); // to find by 0-11
+
       System.out.println("Winning tickets for the Month " + monthInput +": ");
       System.out.println(selectedTickets);
 
@@ -160,6 +179,7 @@ public class Menu {
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
       if(userInput == 1){
         userCart.addTicketList(selectedTickets);
+        selectedTickets = new ArrayList<>(); //clear as they been added.
         System.out.println("Tickets added to cart: ");
         System.out.println(userCart);
         userInput = MENU_CHOICE;
@@ -171,8 +191,8 @@ public class Menu {
       userInput = returnToMenu(input);
 
     }
-    if(userInput == 0){ //redundant?
-      return userInput;
+    if(userInput < 0){ //redundant?
+      userInput = MONTH_WINNER_CHOICE;
     }
     return userInput;
   }
@@ -197,9 +217,8 @@ public class Menu {
 
       String invalidMessageYear = String.format(standardInputError,EARLIEST_YEAR,LATEST_YEAR);
       int yearInput = boundsCheck(YEAR_SIGNATURE, invalidMessageYear, input);
-      selectedTickets = database.findByYear(yearInput);
-      //LotteryTicket sample = new LotteryTicket(new int[] {1,2,3,4,5}, 20);
-      //selectedTickets.add(sample);
+      selectedTickets.addAll(database.findByYear(yearInput));
+//      selectedTickets = database.findByYear(yearInput);
       System.out.println("Winning tickets for the Year " + yearInput +": ");
       System.out.println(selectedTickets);
 
@@ -210,6 +229,7 @@ public class Menu {
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
       if(userInput == 1){
         userCart.addTicketList(selectedTickets);
+        selectedTickets = new ArrayList<>(); //clear as they been added.
         System.out.println("Tickets added to cart: ");
         System.out.println(userCart);
         userInput = MENU_CHOICE;
@@ -220,8 +240,8 @@ public class Menu {
       // stall to continue to menu.
       userInput = returnToMenu(input);
     }
-    if(userInput == 0){
-      return userInput;
+    if(userInput < 0){
+      userInput = YEAR_WINNER_CHOICE;
     }
     return userInput; // different than other methods for now
   }
@@ -329,11 +349,7 @@ public class Menu {
     if(userInput == 1){
       return MENU_CHOICE;
     }
-    if( userInput == 0) {
-      return userInput;
-    } else {
-      returnToMenu(input);
-    }
-    return MENU_CHOICE;
+
+    return userInput * -1;
   }
 }
