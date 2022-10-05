@@ -70,7 +70,7 @@ public class MegaMillionsDatabase {
   private void countNumberAppearance(int[] numberArray) {
     for (int value : numberArray) {
       if (numbersMap.containsKey(value)) {
-        numbersMap.put(value, numbersMap.get(value) + 1);
+        numbersMap.replace(value, numbersMap.get(value) + 1);
       } else {
         numbersMap.put(value, 1);
       }
@@ -79,7 +79,7 @@ public class MegaMillionsDatabase {
 
   private void countMegaBallAppearance(int value) {
       if (megaBallMap.containsKey(value)) {
-        megaBallMap.put(value, megaBallMap.get(value) + 1);
+        megaBallMap.replace(value, megaBallMap.get(value) + 1);
       } else {
         megaBallMap.put(value, 1);
       }

@@ -34,6 +34,10 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_predictForMe() {
+    System.out.println(predictor.getTop20Numbers());
+    System.out.println(predictor.getTop10MegaBalls());
   }
+
+
 
 }
