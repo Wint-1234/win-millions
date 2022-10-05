@@ -48,6 +48,10 @@ class LotteryNumberPredictorTest {
     LotteryNumberPredictor lotteryNumberPredictor = new LotteryNumberPredictor();
     System.out.println(lotteryNumberPredictor.getTop10Numbers());
     System.out.println(lotteryNumberPredictor.getTop5MegaBalls());
+    System.out.println("\n");
+    System.out.println(lotteryNumberPredictor.predictForMe());
+
+
   }
 
 }

@@ -65,61 +65,24 @@ public class LotteryNumberPredictor {
 
   public List<LotteryTicket> predictForMe() {
     List<LotteryTicket> tickets = new ArrayList<>();
-
-    // Take top 3 numbers and search for LotteryTickets containing these values
-    int[] top3Numbers = new int[3];
-    for(int i = 0; i < 3; i++) {
-      top3Numbers[i] = top10Numbers.get(i);
+    int[] topNumbers = new int[2];
+    for(int i = 0; i < 2; i++) {
+      topNumbers[i] = top10Numbers.get(i);
     }
-    var listContainingTop3Numbers = findByNumbers(top3Numbers);
-
-    // Count appearance of each number and store in LocalNumbersMap, get newTop20Numbers
-    for (LotteryTicket ticket : listContainingTop3Numbers) {
-      countNumberAppearance(ticket.getLotteryNumbers());
+    var listContainingTopNumbers = findByNumbers(topNumbers);
+    // Add tickets containingTop2Numbers
+    for (LotteryTicket ticket: listContainingTopNumbers) {
+      tickets.add(ticket);
     }
-    var newTop20Numbers = getTop10Numbers(localNumbersMap);
-
-    // Create array for which to append values, find new values, and update.
-    int[] lotteryNumbersArray = Arrays.copyOf(top3Numbers, 5);
-    int number4 = -1;
-    int number5 = -1;
-    for (int value : newTop20Numbers) {
-      if (top10Numbers.contains(value) && (number4 == -1)) {
-        number4 = value;
-        break;
-      }
+    for(int i = 0; i < 2; i++) {
+      int k = 0 + 2;
+      topNumbers[0] = top10Numbers.get(k);
+      k++;
     }
-    for (int value : newTop20Numbers) {
-      if (top10Numbers.contains(value) && (number5 == -1)) {
-        number5 = value;
-        break;
-      }
+    listContainingTopNumbers = findByNumbers(topNumbers);
+    for (LotteryTicket ticket: listContainingTopNumbers) {
+      tickets.add(ticket);
     }
-    lotteryNumbersArray[3] = ((number4 == -1) ? top10Numbers.get(0) : number4);
-    lotteryNumbersArray[4] = ((number5 == -1) ? top10Numbers.get(1) : number5);
-
-    // Create 2 more arrays to create Lottery Tickets based on top values on new/old Top20
-//    int[] lotteryNumbersArray2 = {newTop20Numbers.get(0), newTop20Numbers.get(1),
-//        newTop20Numbers.get(2), newTop20Numbers.get(3), newTop20Numbers.get(4)};
-    int[] lotteryNumbersArray3 = {top10Numbers.get(0), top10Numbers.get(1),
-        top10Numbers.get(2), top10Numbers.get(3), top10Numbers.get(4)};
-
-    // Create LotteryTickets
-    LotteryTicket ticket = new LotteryTicket(lotteryNumbersArray, top5MegaBalls.get(0));
-    LotteryTicket ticket2 = new LotteryTicket(lotteryNumbersArray, top5MegaBalls.get(1));
-//    LotteryTicket ticket3 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(0));
-//    LotteryTicket ticket4 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(1));
-    LotteryTicket ticket5 = new LotteryTicket(lotteryNumbersArray3, top5MegaBalls.get(0));
-    LotteryTicket ticket6 = new LotteryTicket(lotteryNumbersArray3, top5MegaBalls.get(1));
-
-    // Add Tickets to List
-    tickets.add(ticket);
-    tickets.add(ticket2);
-//    tickets.add(ticket3);
-//    tickets.add(ticket4);
-    tickets.add(ticket5);
-    tickets.add(ticket6);
-
     return tickets;
   }
 
@@ -132,15 +95,6 @@ public class LotteryNumberPredictor {
     return true;
   }
 
-  private void countNumberAppearance(int[] numberArray) {
-    for (int value : numberArray) {
-      if (localNumbersMap.containsKey(value)) {
-        localNumbersMap.replace(value, localNumbersMap.get(value) + 1);
-      } else {
-        localNumbersMap.put(value, 1);
-      }
-    }
-  }
   public List<Integer> getTop10Numbers(Map<Integer, Integer> map) {
     return produceTop10Numbers(map);
   }
@@ -168,7 +122,7 @@ public class LotteryNumberPredictor {
       numberArray[i] = number;
     }
     Arrays.sort(numberArray);
-    for (int i = numberArray.length - 1; i > 60; i--) {
+    for (int i = numberArray.length - 1; i >= 60; i--) {
       result.add(numberArray[i].getNumber());
     }
     return result;
@@ -185,7 +139,7 @@ public class LotteryNumberPredictor {
       numberArray[i] = number;
     }
     Arrays.sort(numberArray);
-    for (int i = numberArray.length - 1; i > 20; i--) {
+    for (int i = numberArray.length - 1; i >= 20; i--) {
       result.add(numberArray[i].getNumber());
     }
     return result;
