@@ -15,22 +15,25 @@ public class LotteryNumberPredictor {
   public static final int YEAR_LOWER_BOUND = 2017;
   public static final int YEAR_UPPER_BOUND = 2022;
   public static final int YEAR_OFFSET = 1900;
-  public static final int MONTH_LOWER_BOUND = 0;
   public static final int MONTH_UPPER_BOUND = 11;
   private final List<LotteryTicket> database;
   private final Map<Integer, Integer> numbersMap;
   private final Map<Integer, Integer> megaBallMap;
   private Map<Integer, Integer> localNumbersMap;
+  List<Integer> top20Numbers;
+  List<Integer>  top10MegaBalls;
 
   public LotteryNumberPredictor() throws FileNotFoundException {
     this.database = new MegaMillionsDatabase().getLotteryTickets();
     this.numbersMap = new MegaMillionsDatabase().getNumbersMap();
     this.megaBallMap = new MegaMillionsDatabase().getMegaBallMap();
     localNumbersMap = new HashMap<>();
+    top20Numbers = getTop20Numbers(numbersMap);
+    top10MegaBalls = getTop10MegaBalls(megaBallMap);
   }
 
   public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
-    if (month < MONTH_LOWER_BOUND || month > MONTH_UPPER_BOUND) {
+    if (month < 0 || month > MONTH_UPPER_BOUND) {
       throw new IllegalArgumentException();
     }
     return database
@@ -53,20 +56,21 @@ public class LotteryNumberPredictor {
     if (numbers == null) {
       throw new NullPointerException();
     }
+    if (numbers.length > 5 || numbers.length == 0) {
+      throw new IllegalArgumentException();
+    }
     return database
         .stream()
-        .filter(lotteryTicket -> containsNumbers(lotteryTicket.getLotteryNumbers(), numbers))
+        .filter(lotteryTicket -> (containsNumbers(lotteryTicket.getLotteryNumbers(), numbers)))
         .collect(Collectors.toList());
   }
 
   public List<LotteryTicket> predictForMe() {
-    var top20Numbers= getTop20Numbers(numbersMap);
-    var top10MegaBalls = getTop10MegaBalls(megaBallMap);
     List<LotteryTicket> tickets = new ArrayList<>();
 
     // Take top 3 numbers and search for LotteryTickets containing these values
     int[] top3Numbers = new int[3];
-    for(int i = MONTH_LOWER_BOUND; i < 3; i++) {
+    for(int i = 0; i < 3; i++) {
       top3Numbers[i] = top20Numbers.get(i);
     }
     var listContainingTop3Numbers = findByNumbers(top3Numbers);
@@ -93,31 +97,28 @@ public class LotteryNumberPredictor {
         break;
       }
     }
-    lotteryNumbersArray[3] = ((number4 == -1) ? top20Numbers.get(MONTH_LOWER_BOUND) : number4);
+    lotteryNumbersArray[3] = ((number4 == -1) ? top20Numbers.get(0) : number4);
     lotteryNumbersArray[4] = ((number5 == -1) ? top20Numbers.get(1) : number5);
 
     // Create 2 more arrays to create Lottery Tickets based on top values on new/old Top20
-    int[] lotteryNumbersArray2 = {newTop20Numbers.get(MONTH_LOWER_BOUND), newTop20Numbers.get(1),
-        newTop20Numbers.get(2), newTop20Numbers.get(3), newTop20Numbers.get(4)};
-    int[] lotteryNumbersArray3 = {top20Numbers.get(MONTH_LOWER_BOUND), top20Numbers.get(1),
+//    int[] lotteryNumbersArray2 = {newTop20Numbers.get(0), newTop20Numbers.get(1),
+//        newTop20Numbers.get(2), newTop20Numbers.get(3), newTop20Numbers.get(4)};
+    int[] lotteryNumbersArray3 = {top20Numbers.get(0), top20Numbers.get(1),
         top20Numbers.get(2), top20Numbers.get(3), top20Numbers.get(4)};
 
     // Create LotteryTickets
-    LotteryTicket ticket = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
+    LotteryTicket ticket = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(0));
     LotteryTicket ticket2 = new LotteryTicket(lotteryNumbersArray, top10MegaBalls.get(1));
-    LotteryTicket ticket3 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
-    LotteryTicket ticket4 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(1));
-    LotteryTicket ticket5 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(
-        MONTH_LOWER_BOUND));
+//    LotteryTicket ticket3 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(0));
+//    LotteryTicket ticket4 = new LotteryTicket(lotteryNumbersArray2, top10MegaBalls.get(1));
+    LotteryTicket ticket5 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(0));
     LotteryTicket ticket6 = new LotteryTicket(lotteryNumbersArray3, top10MegaBalls.get(1));
 
     // Add Tickets to List
     tickets.add(ticket);
     tickets.add(ticket2);
-    tickets.add(ticket3);
-    tickets.add(ticket4);
+//    tickets.add(ticket3);
+//    tickets.add(ticket4);
     tickets.add(ticket5);
     tickets.add(ticket6);
 
@@ -132,62 +133,66 @@ public class LotteryNumberPredictor {
     return produceTop10MegaBalls(map);
   }
 
-  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
-      throws NullPointerException {
-    if (numberArray == null || numbersToCheck == null) {
-      throw new NullPointerException();
-    }
-    var listArray = List.of(numberArray);
+  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
     for (int value: numbersToCheck) {
-      if (!listArray.contains(value)) {
+      if (Arrays.binarySearch(numberArray, value) < 0) {
         return false;
       }
     }
     return true;
   }
 
+  // TODO: 10/5/22 Check map keys in order of highest values, save them, and return them as List
   private List<Integer> produceTop20Numbers(Map<Integer, Integer> map) {
-    List<Integer> result = new ArrayList<>();                              // Top 20 Numbers
-    List<Integer> list = new ArrayList<>(map.values());      // Get all values in map
-    Collections.sort(list);
-    list = list.subList(MONTH_LOWER_BOUND, 20);
-
-    // Check each value in sorted list and add all numbers with value in map to result
-    for (int value: list) {
-      for (Entry<Integer, Integer> entry : map.entrySet()) {
-        if (entry.getValue() == value) {
-          result.add(entry.getKey());
-        }
-      }
-    }
-    return result;
+//    List<Integer> result = new ArrayList<>();                              // Top 20 Numbers
+//    List<Integer> list = new ArrayList<>(map.values());      // Get all values in map
+//    Collections.sort(list);
+//    list = list.subList(0, list.size());
+//
+//    // Check each value in sorted list and add all numbers with value in map to result
+//    for (int value: list) {
+//      for (Entry<Integer, Integer> entry : map.entrySet()) {
+//        if (entry.getValue() == value) {
+//          result.add(entry.getKey());
+//        }
+//      }
+//    }
+    return null;
   }
 
+  // TODO: 10/5/22 Check map keys in order of highest values, save them, and return them as List
   private List<Integer> produceTop10MegaBalls(Map<Integer, Integer> map) {
-    List<Integer> result = new ArrayList<>();                              // Top 10 MegaBalls
-    List<Integer> list = new ArrayList<>(map.values());     // Get all values in map
-    Collections.sort(list);
-    list = list.subList(MONTH_LOWER_BOUND, 10);
-
-    // Check each value in sorted list and add all numbers with value in map to result
-    for (int value: list) {
-      for (Entry<Integer, Integer> entry : map.entrySet()) {
-        if (entry.getValue() == value) {
-          result.add(entry.getKey());
-        }
-      }
-    }
-    return result;
+//    List<Integer> result = new ArrayList<>();                              // Top 10 MegaBalls
+//    List<Integer> list = new ArrayList<>(map.values());                    // Get all values in map
+//    Collections.sort(list);
+//    list = list.subList(0, list.size());
+//
+//    // Check each value in sorted list and add all numbers with value in map to result
+//    for (int value: list) {
+//      for (Entry<Integer, Integer> entry : map.entrySet()) {
+//        if (entry.getValue() == value) {
+//          result.add(entry.getKey());
+//        }
+//      }
+//    }
+    return null;
   }
 
   private void countNumberAppearance(int[] numberArray) {
     for (int value : numberArray) {
       if (localNumbersMap.containsKey(value)) {
-        localNumbersMap.put(value, localNumbersMap.get(value) + 1);
+        localNumbersMap.replace(value, localNumbersMap.get(value) + 1);
       } else {
         localNumbersMap.put(value, 1);
       }
     }
   }
 
+  public List<Integer> getTop20Numbers() {
+    return top20Numbers;
+  }
+
+  public List<Integer> getTop10MegaBalls() {
+    return top10MegaBalls;
+  }
 }
