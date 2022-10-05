@@ -42,6 +42,7 @@ public class Menu {
   private final LotteryNumberPredictor database = new LotteryNumberPredictor();
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
+  private final String addTicketsMessage = "Would you like to add the tickets to cart?\n 1. Yes\n2. No";
 
   // Startup message to the program.
   public Menu() throws FileNotFoundException {
@@ -69,7 +70,7 @@ public class Menu {
     System.out.println("2. Predict numbers for me.");
     System.out.println("3. Display winning numbers by selected month.");
     System.out.println("4. Display winning numbers by selected year.");
-    System.out.println("5. Display Top-5 or Top-10 winning lottery numbers.");
+    System.out.println("5. Display Top-10 winning numbers & Top-5 Mega Ball numbers.");
     System.out.println("6. Display Ways to Win in Mega Millions");
     System.out.println("7. Display Mega Millions History");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
@@ -127,21 +128,41 @@ public class Menu {
   //currently has issues withgetting year prediction and adding it to userCart
   public int predictNumbers(){
     System.out.println("\nPredicting Numbers.");
-    System.out.println("Current Cart:");          //make display an option choice?
-    System.out.println(userCart);
-    System.out.println("1. Predict with custom values."); // TODO: 10/5/2022 change to just predict
+    System.out.println("1. Predict Mega Ball Tickets.");
+    System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
     System.out.printf(standardInputMessage , EXIT_CODE, PREDICT_MAX_VALUE);
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, PREDICT_MAX_VALUE);
     Scanner input = new Scanner(System.in);
-    int userInput = MENU_CHOICE;
-
-    userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
+    int userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
 
     // TODO: 10/4/2022 user input for predict
+
+    if(userInput == 2){
+      userInput = MENU_CHOICE;
+    }
     if(userInput == 1){
-      // ask and check for user input to be predicted?
+      System.out.println("Predicting tickets.");
+      selectedTickets.addAll(database.predictForMe());
+
+      System.out.println("The predicted tickets: \n" + selectedTickets);
+      System.out.println(addTicketsMessage);
+
+      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+
+      if(userInput == 1){
+        userCart.addTicketList(selectedTickets);
+        selectedTickets = new ArrayList<>();
+        System.out.println("Tickets added to cart: \n" + userCart);
+        userInput = MENU_CHOICE;
+      }
+      if(userInput == 2){
+        userInput = MENU_CHOICE;
+      }
+
+      userInput = returnToMenu(input);
     }
     if(userInput < 0){
       userInput = PREDICT_CHOICE;
@@ -151,8 +172,6 @@ public class Menu {
 
   public int winnersByMonth(){// TODO: 10/5/2022 going to have to -1 to month input for method call
     System.out.println("Winning numbers on particular month.");
-//    System.out.println("Current Cart:");
-//    System.out.println(userCart);
     System.out.println("1. Display winning numbers by desired month.");
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
@@ -162,6 +181,10 @@ public class Menu {
     Scanner input = new Scanner(System.in);
     int userInput = boundsCheck(MONTH_WINNER_CHOICE, invalidMessage, input);
 
+
+    if(userInput == 2){
+      userInput = MENU_CHOICE;
+    }
     if(userInput == 1){
       System.out.println("Enter the month 1 (January) to 12 (December)");
       String invalidMessageMonth = String.format(standardInputError, EARLIEST_MONTH,LATEST_MONTH);
@@ -199,8 +222,6 @@ public class Menu {
 
   public int winnersByYear(){
     System.out.println("Winning numbers on a particular year.");
-    //    System.out.println("Current Cart:");
-    //    System.out.println(userCart);
     System.out.println("1. Display winning numbers by desired year.");
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
@@ -212,6 +233,9 @@ public class Menu {
 
     userInput = boundsCheck(YEAR_WINNER_CHOICE, invalidMessage, input);
 
+    if(userInput == 2){
+      userInput = MENU_CHOICE;
+    }
     if(userInput == 1){
       System.out.println("Enter a year from 2017 to 2022.");
 
@@ -248,18 +272,32 @@ public class Menu {
 
   public int topWinningNumbers(){
     System.out.println("Top winning numbers, from choice of 10 or 5.");
-    //    System.out.println("Current Cart:");
-//    System.out.println(userCart);
-    System.out.println("1. Display Top-5 winning numbers.");
-    System.out.println("2. Display Top-10 winning numbers.");
-    System.out.println("3. Return to main menu.");
+    System.out.println("1. Display Top-10 winning numbers & Top-5 Mega Ball numbers.");
+    System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
     System.out.printf(standardInputMessage, EXIT_CODE, 3);
 
     // TODO: 10/4/2022 need imp
     // for the method getTopXXXX() should return a list of the respective top numbers
     // need to iterate over and pull the value from the list. with .getNumber
-    return  MENU_CHOICE;
+
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+    Scanner input = new Scanner(System.in);
+    int userInput = boundsCheck(TOP_CHOICE, invalidMessage, input);
+
+    // menu breakout first
+    if(userInput == 2){
+      userInput = MENU_CHOICE;
+    }
+    if(userInput == 1){
+      System.out.println("Displaying Top-10 winning numbers: \n" + database.getTop20Numbers());
+      System.out.println("Displaying Top-5 Mega Ball numbers: \n" + database.getTop10MegaBalls());
+      userInput = returnToMenu(input);
+    }
+    if(userInput < 0){
+      userInput = TOP_CHOICE;
+    }
+    return  userInput;
   }
 
   public int waysToWin(){
