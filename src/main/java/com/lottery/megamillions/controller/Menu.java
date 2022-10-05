@@ -1,7 +1,5 @@
 package com.lottery.megamillions.controller;
 
-import static java.lang.Thread.sleep;
-
 import com.lottery.database.LotteryNumberPredictor;
 import com.lottery.database.LotteryTicket;
 import java.io.FileNotFoundException;
