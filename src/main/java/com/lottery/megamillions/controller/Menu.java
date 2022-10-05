@@ -34,7 +34,7 @@ public class Menu {
 
 
   private Cart userCart = new Cart();
-  private List<LotteryTicket> userTickets = new ArrayList<>();
+  private List<LotteryTicket> selectedTickets = new ArrayList<>();
   private final LotteryNumberPredictor database = new LotteryNumberPredictor();
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
@@ -76,7 +76,7 @@ public class Menu {
   public int createCart(){
     System.out.println("Created cart.");
     System.out.println("Current cart: " + userCart);
-    System.out.println("Selected drawings: " + userTickets);
+    System.out.println("Selected drawings: " + selectedTickets);
 
     System.out.println("1. Add selected drawings to cart.");
     System.out.println("2. Return to Menu.");
@@ -91,22 +91,22 @@ public class Menu {
     userInput = boundsCheck(CART_CHOICE,invalidMessage, input);
 
     if(userInput == 1){
-      for (LotteryTicket ticket: userTickets) {
-        userCart.addTicket(ticket.getLotteryNumbers(),ticket.getMegaBallNumber());
-      }
+      userCart.addTicketList(selectedTickets);
       System.out.println("Tickets added.");
       userInput = MENU_CHOICE;
+    }
+    if(userInput == 0){
+      return userInput;
     }
     return MENU_CHOICE;
   }
 
   //currently has issues withgetting year prediction and adding it to userCart
   public int predictNumbers(){
-    System.out.println("Predicting Numbers.");
-    System.out.println("1. Find by year.");
-    System.out.println("2. Find by month.");
-    System.out.println("3. Find by day.");
-    System.out.println("4. Enter custom values.");
+    System.out.println("\nPredicting Numbers.");
+    System.out.println("Current Cart:");
+    System.out.println(userCart);
+    System.out.println("4. Predict with custom values.");
     System.out.println("0. Close Program.");
     System.out.printf(standardInputMessage , EXIT_CODE, PREDICT_MAX_VALUE);
 
@@ -122,8 +122,8 @@ public class Menu {
         System.out.println("Enter a year from 2017 to 2022.");
         String invalidMessageYear = String.format(standardInputError,EARLIEST_YEAR,LATEST_YEAR);
         int yearInput = boundsCheck(YEAR_ID, invalidMessageYear, input);
-        userTickets = database.findByYear(yearInput);
-        userCart.addTicketList(userTickets);
+        selectedTickets = database.findByYear(yearInput);
+        userCart.addTicketList(selectedTickets);
         System.out.println(userCart);
         break;
       case 2: //this is month
@@ -137,7 +137,9 @@ public class Menu {
       default:
 
     }
-
+    if(userInput == 0){
+      return userInput;
+    }
     return MENU_CHOICE;
   }
 
@@ -179,26 +181,26 @@ public class Menu {
   }
 
   /*     -----------          helper methods for bounds                                                    -------------        */
-  // checks bound, id is the overall menu selection. invalidMessage is custom error. input is the scanner.
-  private int boundsCheck(int id, String invalidMessage, Scanner input){
+  // checks bound, selectionSignature is the overall menu selection. invalidMessage is custom error. input is the scanner.
+  private int boundsCheck(int selectionSignature, String invalidMessage, Scanner input){
     int userInput = MENU_CHOICE;
-    while(!isValidChoice(userInput, id)){
+    while(!isValidChoice(userInput, selectionSignature)){
       while (!input.hasNextInt()){
         System.out.println("Non Number " + invalidMessage);
         input.next();
       }
       userInput = input.nextInt();
-      if(!isValidChoice(userInput, id)){
+      if(!isValidChoice(userInput, selectionSignature)){
         System.out.println("Bounds " + invalidMessage);
       }
     }
     return  userInput;
   }
 
-  // checks for valid choice. choice is what entered. id is corrasponds to overall menu selection.(enum?)
-  private boolean isValidChoice(int choice, int id){
+  // checks for valid choice. choice is what entered. selectionSignature is corrasponds to overall menu selection.(enum?)
+  private boolean isValidChoice(int choice, int selectionSignature){
     boolean result = false;
-    switch (id){
+    switch (selectionSignature){
       case MENU_CHOICE:
         result = choice >= EXIT_CODE && choice <= MENU_MAX_VALUE;
         break;

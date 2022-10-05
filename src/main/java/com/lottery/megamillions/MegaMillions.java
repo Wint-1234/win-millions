@@ -51,7 +51,7 @@ public class MegaMillions {
         default:
           choice = menu.runMenu();
       }
-      System.out.println("Thank you for using our predictor.");
     }
+    System.out.println("Thank you for using our predictor.");
   }
 }
