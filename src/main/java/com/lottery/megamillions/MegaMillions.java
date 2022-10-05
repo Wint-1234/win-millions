@@ -12,8 +12,8 @@ public class MegaMillions {
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
   public static final int PREDICT_CHOICE = 2;
-  public static final int REPEATED_CHOICE = 3;
-  public static final int DAY_CHOICE = 4;
+  public static final int MONTH_WINNER_CHOICE = 3;
+  public static final int YEAR_WINNER_CHOICE = 4;
   public static final int TOP_CHOICE = 5;
   public static final int WAYS_TO_WIN_CHOICE = 6;
   public static final int HISTORY_CHOICE = 7;
@@ -27,31 +27,31 @@ public class MegaMillions {
     Menu menu = new Menu();
     while (choice != EXIT_CODE){
       switch (choice){
-        case CART_CHOICE:
-          choice = menu.createCart();
+        case CART_CHOICE: // 1
+          choice = menu.viewCart();
           break;
-        case PREDICT_CHOICE:
+        case PREDICT_CHOICE: // 2
           choice = menu.predictNumbers();
           break;
-        case REPEATED_CHOICE:
-          choice = menu.repeatedNumbers();
+        case MONTH_WINNER_CHOICE: // 3
+          choice = menu.winnersByMonth();
           break;
-        case DAY_CHOICE:
-          choice = menu.winningDay();
+        case YEAR_WINNER_CHOICE: // 4
+          choice = menu.winnersByYear();
           break;
-        case TOP_CHOICE:
+        case TOP_CHOICE: // 5
           choice = menu.topWinningNumbers();
           break;
-        case WAYS_TO_WIN_CHOICE:
+        case WAYS_TO_WIN_CHOICE: // 6
           choice = menu.waysToWin();
           break;
-        case HISTORY_CHOICE:
+        case HISTORY_CHOICE: // 7
           choice = menu.displayHistory();
           break;
         default:
           choice = menu.runMenu();
       }
-      System.out.println("Thank you for using our predictor.");
     }
+    System.out.println("Thank you for using our predictor.");
   }
 }
