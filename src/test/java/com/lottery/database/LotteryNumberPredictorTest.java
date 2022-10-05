@@ -19,10 +19,12 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_findByMonth() {
+    System.out.println(predictor.findByMonth(0));
   }
 
   @Test
   void test_findByNumbers() {
+    System.out.println(predictor.findByYear(2018));
   }
 
   @Test
