@@ -1,9 +1,12 @@
 package com.lottery.database;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 public class LotteryNumberPredictor {
@@ -48,14 +51,20 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
-  // TODO: 10/5/22
-  public List<Number> getTop20Numbers() {
+  public List<LotteryTicket> predictForMe() {
+    var top20Numbers= getTop20Numbers();
+    var top10MegaBalls = getTop10MegaBalls();
+
+
     return null;
   }
 
-  // TODO: 10/5/22
-  public List<Number> getTop10MegaBalls() {
-    return null;
+  public List<Integer> getTop20Numbers() {
+    return produceTop20Numbers();
+  }
+
+  public List<Integer> getTop10MegaBalls() {
+    return produceTop10MegaBalls();
   }
 
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck)
@@ -72,5 +81,38 @@ public class LotteryNumberPredictor {
     return true;
   }
 
+  private List<Integer> produceTop20Numbers() {
+    List<Integer> result = new ArrayList<>();                              // Top 20 Numbers
+    List<Integer> list = new ArrayList<Integer>(numbersMap.values());      // Get all values in map
+    Collections.sort(list);
+    list = list.subList(0, 20);
+
+    // Check each value in sorted list and add all numbers with value in map to result
+    for (int value: list) {
+      for (Entry<Integer, Integer> entry : numbersMap.entrySet()) {
+        if (entry.getValue() == value) {
+          result.add(entry.getKey());
+        }
+      }
+    }
+    return result;
+  }
+
+  private List<Integer> produceTop10MegaBalls() {
+    List<Integer> result = new ArrayList<>();                              // Top 10 MegaBalls
+    List<Integer> list = new ArrayList<Integer>(megaBallMap.values());     // Get all values in map
+    Collections.sort(list);
+    list = list.subList(0, 10);
+
+    // Check each value in sorted list and add all numbers with value in map to result
+    for (int value: list) {
+      for (Entry<Integer, Integer> entry : megaBallMap.entrySet()) {
+        if (entry.getValue() == value) {
+          result.add(entry.getKey());
+        }
+      }
+    }
+    return result;
+  }
 
 }
