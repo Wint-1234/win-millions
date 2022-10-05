@@ -24,15 +24,20 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_findByNumbers() {
-    System.out.println(predictor.findByYear(2018));
+    System.out.println(predictor.findByNumbers(new int[]{9, 15}));
   }
 
   @Test
   void test_findByYear() {
+    System.out.println(predictor.findByYear(2018));
   }
 
   @Test
   void test_predictForMe() {
+    System.out.println(predictor.getTop20Numbers());
+    System.out.println(predictor.getTop10MegaBalls());
   }
+
+
 
 }
