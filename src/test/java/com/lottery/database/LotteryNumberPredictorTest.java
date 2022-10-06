@@ -3,13 +3,6 @@ package com.lottery.database;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import org.junit.jupiter.api.Test;
 
 class LotteryNumberPredictorTest {
@@ -26,30 +19,42 @@ class LotteryNumberPredictorTest {
 
   @Test
   void test_findByMonth() {
-    System.out.println(predictor.findByMonth(0));
+    assertEquals(44, predictor.findByMonth(0).size());
+    assertEquals(40, predictor.findByMonth(1).size());
+    assertEquals(45, predictor.findByMonth(2).size());
+    assertEquals(43, predictor.findByMonth(3).size());
+    assertEquals(44, predictor.findByMonth(4).size());
+    assertEquals(43, predictor.findByMonth(5).size());
+    assertEquals(45, predictor.findByMonth(6).size());
+    assertEquals(44, predictor.findByMonth(7).size());
+    assertEquals(41, predictor.findByMonth(8).size());
+    assertEquals(39, predictor.findByMonth(9).size());
+    assertEquals(43, predictor.findByMonth(10).size());
+    assertEquals(44, predictor.findByMonth(11).size());
   }
 
   @Test
   void test_findByNumbers() {
-    System.out.println(predictor.findByNumbers(new int[]{9, 15}));
+    assertEquals(1, predictor.findByNumbers(new int[]{9, 15}).size());
+    assertEquals(33, predictor.findByNumbers(new int[]{9}).size());
+    assertEquals(0, predictor.findByNumbers(new int[]{99}).size());
   }
 
   @Test
   void test_findByYear() {
-    System.out.println(predictor.findByYear(2018));
+    assertEquals(77, predictor.findByYear(2022).size());
+    assertEquals(105, predictor.findByYear(2021).size());
+    assertEquals(104, predictor.findByYear(2020).size());
+    assertEquals(105, predictor.findByYear(2019).size());
+    assertEquals(104, predictor.findByYear(2018).size());
+    assertEquals(20, predictor.findByYear(2017).size());
   }
 
   @Test
   void test_predictForMe() throws FileNotFoundException {
-    MegaMillionsDatabase database = new MegaMillionsDatabase();
-    System.out.println(database.getNumbersMap());
-    System.out.println(database.getMegaBallMap());
-
-    LotteryNumberPredictor lotteryNumberPredictor = new LotteryNumberPredictor();
-    System.out.println(lotteryNumberPredictor.getTop10Numbers());
-    System.out.println(lotteryNumberPredictor.getTop5MegaBalls());
+    System.out.println(predictor.getTop10Numbers());
+    System.out.println(predictor.getTop5MegaBalls());
     System.out.println("\n");
-    System.out.println(lotteryNumberPredictor.predictForMe());
+    System.out.println(predictor.predictForMe());
   }
-
 }
