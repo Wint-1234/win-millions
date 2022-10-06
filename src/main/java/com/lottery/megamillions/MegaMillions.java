@@ -22,8 +22,6 @@ public class MegaMillions {
     int choice = MENU_CHOICE;
     var database = new MegaMillionsDatabase().getLotteryTickets();
 
-    // TODO: 10/4/2022 within these choices add the option for the user to add their custom ticket,
-    //  particularly for topXXX choice
     Menu menu = new Menu();
     while (choice != EXIT_CODE){
       switch (choice){
