@@ -26,20 +26,21 @@ public class Menu {
   public static final int HISTORY_CHOICE = 7;
   public static final int MENU_MAX_VALUE = 7;
   public static final int CART_MAX_VALUE = 4;
-  public static final int PREDICT_MAX_VALUE = 2; //change?
-  public static final int EARLIEST_YEAR = 2017;
-  public static final int LATEST_YEAR = 2022;
-  public static final int EARLIEST_MONTH = 1;
-  public static final int LATEST_MONTH = 12;
-  public static final int YEAR_SUBMENU_SIGNATURE = 8;
-  public static final int MONTH_SUBMENU_SIGNATURE = 9;
-  public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final int PREDICT_MAX_VALUE = 2;
   public static final int BY_MONTH_MAX_VALUE = 2;
   public static final int BY_YEAR_MAX_VALUE = 2;
   public static final int TOP_WINNING_CHOICE_MAX_VALUE = 3;
+  public static final int EARLIEST_MONTH = 1;
+  public static final int LATEST_MONTH = 12;
+  public static final int EARLIEST_YEAR = 2017;
+  public static final int LATEST_YEAR = 2022;
+  public static final int MONTH_SUBMENU_SIGNATURE = 9;
+  public static final int YEAR_SUBMENU_SIGNATURE = 8;
+  public static final int TWO_OPTIONS_SIGNATURE = 98;
   public static final String ANSI_RESET = "\u001B[0m";
   public static final String ANSI_GREEN = "\u001B[32m";
   public static final String ANSI_RED = "\u001B[31m";
+
 
   // Private fields
   private Cart userCart = new Cart();
@@ -179,7 +180,11 @@ public class Menu {
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = PREDICT_CHOICE;
@@ -203,6 +208,7 @@ public class Menu {
     String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_MONTH_MAX_VALUE);
     int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
 
+    // menu breakout first
     if (userInput == 2) {
       userInput = MENU_CHOICE;
     }
@@ -216,13 +222,17 @@ public class Menu {
       System.out.println(selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
+
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
-
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = MONTH_WINNER_CHOICE;
@@ -261,12 +271,16 @@ public class Menu {
       System.out.println(selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = YEAR_WINNER_CHOICE;
