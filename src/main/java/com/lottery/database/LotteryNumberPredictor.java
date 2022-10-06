@@ -21,6 +21,8 @@ public class LotteryNumberPredictor {
   public static final int MONTH_UPPER_BOUND = 11;
   public static final String MONTH_ERROR = "Invalid month value: ";
   public static final String INVALID_YEAR_ERROR = "Invalid year: ";
+  public static final String PROVIDE_VALID_ARRAY_ERROR = "Please provide an array of values - "
+      + "must not be empty or have more than five values";
 
   private final List<LotteryTicket> database;
   private final Map<Integer, Integer> numbersMap;
@@ -80,12 +82,20 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Returns a list of LotteryTickets with the specified numbers.
+   *
+   * @param numbers int[] of numbers to search for across all tickets.
+   * @return List of LotteryTickets containing the provided ints within the array.
+   * @throws NullPointerException If array provided is null.
+   * @throws IllegalArgumentException If the array length is greater than five or empty.
+   */
   public List<LotteryTicket> findByNumbers(int[] numbers) throws NullPointerException {
     if (numbers == null) {
       throw new NullPointerException();
     }
     if (numbers.length > 5 || numbers.length == 0) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(PROVIDE_VALID_ARRAY_ERROR);
     }
     return database
         .stream()
@@ -93,6 +103,12 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Provides a custom list of lottery tickets that have the numbers with the highest frequencies
+   * in the database.
+   *
+   * @return List of predicted lottery tickets.
+   */
   public List<LotteryTicket> predictForMe() {
     List<LotteryTicket> tickets = new ArrayList<>();
     int[] topNumbers = new int[2];
@@ -101,21 +117,23 @@ public class LotteryNumberPredictor {
     }
     var listContainingTopNumbers = findByNumbers(topNumbers);
     // Add tickets containingTop2Numbers
-    for (LotteryTicket ticket: listContainingTopNumbers) {
-      tickets.add(ticket);
-    }
+    tickets.addAll(listContainingTopNumbers);
     for(int i = 0; i < 2; i++) {
-      int k = 0 + 2;
+      int k = i + 2;
       topNumbers[0] = top10Numbers.get(k);
-      k++;
     }
     listContainingTopNumbers = findByNumbers(topNumbers);
-    for (LotteryTicket ticket: listContainingTopNumbers) {
-      tickets.add(ticket);
-    }
+    tickets.addAll(listContainingTopNumbers);
     return tickets;
   }
 
+  /**
+   *
+   *
+   * @param numberArray
+   * @param numbersToCheck
+   * @return
+   */
   private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
     for (int value: numbersToCheck) {
       if (Arrays.binarySearch(numberArray, value) < 0) {
