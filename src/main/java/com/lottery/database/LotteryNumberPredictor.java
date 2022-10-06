@@ -8,19 +8,34 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Predictor that can be used to query various values and predict lottery number drawings.
+ *
+ * @version 1.0
+ */
 public class LotteryNumberPredictor {
-
+  // Constants
   public static final int YEAR_LOWER_BOUND = 2017;
   public static final int YEAR_UPPER_BOUND = 2022;
   public static final int YEAR_OFFSET = 1900;
   public static final int MONTH_UPPER_BOUND = 11;
+  public static final String MONTH_ERROR = "Invalid month value: ";
+
   private final List<LotteryTicket> database;
   private final Map<Integer, Integer> numbersMap;
   private final Map<Integer, Integer> megaBallMap;
-  private Map<Integer, Integer> localNumbersMap;
-  List<Integer> top10Numbers;
-  List<Integer> top5MegaBalls;
 
+  private Map<Integer, Integer> localNumbersMap;
+  private List<Integer> top10Numbers;
+  private List<Integer> top5MegaBalls;
+
+  /**
+   * Creates a predictor object. It calls on the MegaMillionsDatabase class
+   * to initialize the database, numbersMap, and the megaBallMap.
+   * It also initializes the top10Numbers and top5MegaBalls.
+   *
+   * @throws FileNotFoundException If the MegaMillionsDatabase could not find a file.
+   */
   public LotteryNumberPredictor() throws FileNotFoundException {
     this.database = new MegaMillionsDatabase().getLotteryTickets();
     this.numbersMap = new MegaMillionsDatabase().getNumbersMap();
@@ -30,9 +45,16 @@ public class LotteryNumberPredictor {
     top5MegaBalls = getTop5MegaBalls(megaBallMap);
   }
 
+  /**
+   * Returns a list of LotteryTickets with the specified month.
+   *
+   * @param month int representation of month to search for from 0-11 (Inclusive).
+   * @return List of LotteryTickets with the specified month.
+   * @throws IllegalArgumentException If month value does not adhere to specifications.
+   */
   public List<LotteryTicket> findByMonth(int month) throws IllegalArgumentException {
     if (month < 0 || month > MONTH_UPPER_BOUND) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(MONTH_ERROR + month);
     }
     return database
         .stream()
