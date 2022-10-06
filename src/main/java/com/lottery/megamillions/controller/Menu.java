@@ -7,9 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * Menu class that handles the user's input and performs operations given through menu and submenu
+ * options.
+ *
+ * @version 1.0
+ */
 public class Menu {
-
-  // Top level menu selection that is in main.
+  // Constants
   public static final int EXIT_CODE = 0;
   public static final int MENU_CHOICE = 99;
   public static final int CART_CHOICE = 1;
@@ -19,8 +24,6 @@ public class Menu {
   public static final int TOP_CHOICE = 5;
   public static final int WAYS_TO_WIN_CHOICE = 6;
   public static final int HISTORY_CHOICE = 7;
-  public static final String CLOSE_PROGRAM_MESSAGE = "0. Close Program.";
-  // Top bounds values that is for invalidMessage local values, which is passed in boundsCheck()
   public static final int MENU_MAX_VALUE = 7;
   public static final int CART_MAX_VALUE = 4;
   public static final int PREDICT_MAX_VALUE = 2; //change?
@@ -28,26 +31,22 @@ public class Menu {
   public static final int LATEST_YEAR = 2022;
   public static final int EARLIEST_MONTH = 1;
   public static final int LATEST_MONTH = 12;
-
-  // this is exclusive towards the predictNumbers() method to be passsed into the boundsCheck() method.
-  public static final int YEAR_SIGNATURE = 8;
-  public static final int MONTH_SIGNATURE = 9;
+  public static final int YEAR_SUBMENU_SIGNATURE = 8;
+  public static final int MONTH_SUBMENU_SIGNATURE = 9;
   public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final int BY_MONTH_MAX_VALUE = 2;
+  public static final int BY_YEAR_MAX_VALUE = 2;
+  public static final int TOP_WINNING_CHOICE_MAX_VALUE = 3;
 
+  // Private fields
   private Cart userCart = new Cart();
   private List<LotteryTicket> selectedTickets = new ArrayList<>();
   private final LotteryNumberPredictor database;
-
+  public final String closeProgramMessage = "0. Close Program.";
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
   private final String addTicketsMessage = "Would you like to add the tickets to cart?\n1. Yes\n2. No";
-
-  // Startup message to the program.
-
-  private final String menuBorder = "========================";
-  String num = "5";
-
-  String ball2 =
+  private final String winMillionsLogo =
       "\t\t\t\t\t\t        _.a$$$$$a._\n"
           + "\t\t\t\t\t\t     ,$$$$MEGA$$$$$.\n"
           + "\t\t\t\t\t\t   ,$$$$MILLIONS$$$$$.\n"
@@ -64,9 +63,10 @@ public class Menu {
           + "\t\t\t\t\t\t       `~$$$$$$$~'\n\n"
           + "\t\t----------Welcome to Win Millions!----------\n";
 
-  // Startup message to the program.
+  /**
+   * Initialize the database.
+   */
   public Menu() {
-    System.out.println("\t\t----------Welcome to Win Millions!----------\n");
     try {
       database = new LotteryNumberPredictor();
     } catch (FileNotFoundException e) {
@@ -74,22 +74,13 @@ public class Menu {
     }
   }
 
-  // Returns the userInput of a menu choice 0 to 7.
+  /**
+   * Displays the overall main menu to the user and asks for input for next operation.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int runMenu() {
-    Scanner input = new Scanner(System.in);
-    String invalidMessage = String.format(standardInputError, EXIT_CODE,
-        MENU_MAX_VALUE);
-    startingMenu();
-
-    return boundsCheck(MENU_CHOICE, invalidMessage, input);
-  }
-
-  /*--------------   Methods below are in order of menu selection untill next comment seperator         ----------- */
-
-  // maybe remove and add contents to runMenu().
-  public void startingMenu() {
-    System.out.println(ball2);
-
+    System.out.println(winMillionsLogo);
     System.out.println("1. View lottery numbers cart.");
     System.out.println("2. Predict numbers for me.");
     System.out.println("3. Display winning numbers by selected month.");
@@ -97,11 +88,21 @@ public class Menu {
     System.out.println("5. Display Top-10 winning numbers & Top-5 Mega Ball numbers.");
     System.out.println("6. Display Ways to Win in Mega Millions");
     System.out.println("7. Display Mega Millions History");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.println(closeProgramMessage);
     System.out.printf(standardInputMessage, EXIT_CODE, MENU_MAX_VALUE);
+
+    String invalidMessage = String.format(standardInputError, EXIT_CODE,
+        MENU_MAX_VALUE);
+
+    return boundsCheck(MENU_CHOICE, invalidMessage);
   }
 
-  // change to just create message/display cart?
+  /**
+   * Displays to the user the current cart, selected drawings, and options for those objects.
+   * Those actions range from clearing to adding to the cart.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int viewCart() {
     System.out.println("Current cart: " + userCart);
     System.out.println("Selected drawings: " + selectedTickets);
@@ -110,28 +111,26 @@ public class Menu {
     System.out.println("2. Clear selected tickets.");
     System.out.println("3. Clear current cart.");
     System.out.println("4. Return to Menu.");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.println(closeProgramMessage);
 
     System.out.printf(standardInputMessage, EXIT_CODE, CART_MAX_VALUE);
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, CART_MAX_VALUE);
-    Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(CART_CHOICE, invalidMessage, input);
-    // TODO: 10/5/2022 potentional change for method call only that is provided in cart
+    int userInput = boundsCheck(CART_CHOICE, invalidMessage);
     switch (userInput) {
       case 1:
         addToCart();
-        userInput = returnToMenu(input); //stall
+        userInput = returnToMenu();
         break;
       case 2:
         selectedTickets = new ArrayList<>();
         System.out.println("Selected tickets cleared.");
-        userInput = returnToMenu(input);
+        userInput = returnToMenu();
         break;
       case 3:
         userCart = new Cart();
         System.out.println("Cart is cleared.");
-        userInput = returnToMenu(input);
+        userInput = returnToMenu();
         break;
       case 4:
         userInput = MENU_CHOICE;
@@ -144,17 +143,21 @@ public class Menu {
     return userInput;
   }
 
-  //currently has issues withgetting year prediction and adding it to userCart
+  /**
+   * Display to the user the option to generate predicted Mega Ball tickets, and with the option to
+   * add the tickets to the cart.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int predictNumbers() {
     System.out.println("\nPredicting Numbers.");
     System.out.println("1. Predict Mega Ball Tickets.");
     System.out.println("2. Return to main menu.");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
+    System.out.println(closeProgramMessage);
     System.out.printf(standardInputMessage, EXIT_CODE, PREDICT_MAX_VALUE);
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, PREDICT_MAX_VALUE);
-    Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
 
     if (userInput == 2) {
       userInput = MENU_CHOICE;
@@ -166,13 +169,13 @@ public class Menu {
       System.out.println("The predicted tickets: \n" + selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
+      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
 
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = PREDICT_CHOICE;
@@ -180,16 +183,21 @@ public class Menu {
     return userInput;
   }
 
-  public int winnersByMonth() {// TODO: 10/5/2022 going to have to -1 to month input for method call
+  /**
+   * Display to the user the option to retrieve winning numbers by desired month, and with the
+   * option to add the tickets to the cart.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
+  public int winnersByMonth() {
     System.out.println("Winning numbers on particular month.");
     System.out.println("1. Display winning numbers by desired month.");
     System.out.println("2. Return to main menu.");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 2);
+    System.out.println(closeProgramMessage);
+    System.out.printf(standardInputMessage, EXIT_CODE, BY_MONTH_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-    Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(MONTH_WINNER_CHOICE, invalidMessage, input);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_MONTH_MAX_VALUE);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
 
     if (userInput == 2) {
       userInput = MENU_CHOICE;
@@ -197,39 +205,44 @@ public class Menu {
     if (userInput == 1) {
       System.out.println("Enter the month 1 (January) to 12 (December)");
       String invalidMessageMonth = String.format(standardInputError, EARLIEST_MONTH, LATEST_MONTH);
-      int monthInput = boundsCheck(MONTH_SIGNATURE, invalidMessageMonth, input);
+      int monthInput = boundsCheck(MONTH_SUBMENU_SIGNATURE, invalidMessageMonth);
       selectedTickets.addAll(database.findByMonth(monthInput - 1));
 
       System.out.println("Winning tickets for the Month " + monthInput + ": ");
       System.out.println(selectedTickets);
-
       System.out.println(addTicketsMessage);
 
       invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
 
     }
-    if (userInput < 0) { //redundant?
+    if (userInput < 0) {
       userInput = MONTH_WINNER_CHOICE;
     }
     return userInput;
   }
 
+  /**
+   * Display to the user the option to retrieve winning numbers by desired year, and with the
+   * option to add the tickets to the cart.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int winnersByYear() {
     System.out.println("Winning numbers on a particular year.");
     System.out.println("1. Display winning numbers by desired year.");
     System.out.println("2. Return to main menu.");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 2);
+    System.out.println(closeProgramMessage);
+    System.out.printf(standardInputMessage, EXIT_CODE, BY_YEAR_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-    Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(YEAR_WINNER_CHOICE, invalidMessage, input);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_YEAR_MAX_VALUE);
+    int userInput = boundsCheck(YEAR_WINNER_CHOICE, invalidMessage);
 
+    //menu breakout first
     if (userInput == 2) {
       userInput = MENU_CHOICE;
     }
@@ -237,19 +250,19 @@ public class Menu {
       System.out.println("Enter a year from 2017 to 2022.");
 
       String invalidMessageYear = String.format(standardInputError, EARLIEST_YEAR, LATEST_YEAR);
-      int yearInput = boundsCheck(YEAR_SIGNATURE, invalidMessageYear, input);
+      int yearInput = boundsCheck(YEAR_SUBMENU_SIGNATURE, invalidMessageYear);
       selectedTickets.addAll(database.findByYear(yearInput));
+
       System.out.println("Winning tickets for the Year " + yearInput + ": ");
       System.out.println(selectedTickets);
-
       System.out.println(addTicketsMessage);
 
       invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+      userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = YEAR_WINNER_CHOICE;
@@ -257,16 +270,21 @@ public class Menu {
     return userInput;
   }
 
+  /**
+   * Display to the user the option to retrieve the top-10 winning numbers and top-5 Mega Ball
+   * numbers.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int topWinningNumbers() {
     System.out.println("Top winning numbers, from choice of 10 or 5.");
     System.out.println("1. Display Top-10 winning numbers & Top-5 Mega Ball numbers.");
     System.out.println("2. Return to main menu.");
-    System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 3);
+    System.out.println(closeProgramMessage);
+    System.out.printf(standardInputMessage, EXIT_CODE, TOP_WINNING_CHOICE_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-    Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(TOP_CHOICE, invalidMessage, input);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, TOP_WINNING_CHOICE_MAX_VALUE);
+    int userInput = boundsCheck(TOP_CHOICE, invalidMessage);
 
     // menu breakout first
     if (userInput == 2) {
@@ -275,105 +293,137 @@ public class Menu {
     if (userInput == 1) {
       System.out.println("Displaying Top-10 winning numbers: \n" + database.getTop10Numbers());
       System.out.println("Displaying Top-5 Mega Ball numbers: \n" + database.getTop5MegaBalls());
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = TOP_CHOICE;
     }
     return userInput;
   }
-  public void sleep(int i){
-    try{
-      Thread.sleep(i);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
 
-
-  public int waysToWin() {
-    //System.out.println("Ways to win the Mega Ball." );
-    System.out.println("Mega Millions tickets cost $2.00 per play. \n"
+  /**
+   * Display to the user the how to play the Mega Millions game.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
+  public int howToPlay() {
+    System.out.println("\nMega Millions tickets cost $2.00 per play. \n"
         + "Players may pick six numbers from two separate pools of numbers:\n"
         + "- Five different numbers from 1 to 70 (the white balls).\n"
         + "And one number from 1 to 25 (the gold Mega Ball).\n"
         + "- Or select Easy Pick/Quick Pick.\n"
         + "You win the jackpot by matching all six winning numbers in a drawing.\n");
-    sleep(15000);
-    return MENU_CHOICE;
+
+    int userInput = returnToMenu();
+    if(userInput < 0){
+      userInput = WAYS_TO_WIN_CHOICE;
+    }
+    return userInput;
 
   }
 
+  /**
+   * Display to the user the brief history of the Mega Millions game.
+   *
+   * @return int that is used in MegaMillions class for the user's choice of submenu/action.
+   */
   public int displayHistory() {
-    System.out.println("There is over $100 billion spent on lotteries each year. \n"
+    System.out.println("\nThere is over $100 billion spent on lotteries each year. \n"
         + "Lotteries are run by 48 jurisdictions: 45 states plus the District of Columbia, Puerto Rico, and the U.S. Virgin Islands. \n"
         + "Lotteries are subject to the laws of and operated independently by each jurisdiction. \n"
         + "Mega Millions began in 1996 as the Big Game. \n"
         + "The current cost is $2 to play and the largest jackpot ever won was $1.537 billion in 2018.\n"
         + "NATIONAL PROBLEM GAMBLING HELPLINE 1-800-522-4700 \n ");
-    sleep(15000);
-    return MENU_CHOICE;
+
+    int userInput = returnToMenu();
+    if(userInput < 0){
+      userInput = HISTORY_CHOICE;
+    }
+    return userInput;
   }
 
+  /**
+   * Helper method to add selected tickets to the user's cart.
+   */
   private void addToCart() {
     userCart.addTicketList(selectedTickets);
     selectedTickets = new ArrayList<>();
     System.out.println("Tickets added to cart: \n" + userCart);
   }
 
-  /*     -----------          helper methods for bounds                                                    -------------        */
-  // checks bound, selectionSignature is the overall menu selection. invalidMessage is custom error. input is the scanner.
-  private int boundsCheck(int selectionSignature, String invalidMessage, Scanner input) {
+  /**
+   * Checks the input the user has entered is a valid int value within a specified range.
+   *
+   * @param menuSelectionChoice int signature of the menu of originating method call for proper check.
+   * @param invalidMessage String message that is holds an error message unique to the menu.
+   * @return int that is a valid menu option based on the menuSelectionChoice that is passed in.
+   */
+  private int boundsCheck(int menuSelectionChoice, String invalidMessage) {
+    Scanner scanner  = new Scanner(System.in);
     int userInput = MENU_CHOICE;
-    while (!isValidChoice(userInput, selectionSignature)) {
-      while (!input.hasNextInt()) {
+    while (!isValidChoice(userInput, menuSelectionChoice)) {
+      while (!scanner.hasNextInt()) {
         System.out.println("Non Number " + invalidMessage);
-        input.next();
+        scanner.next();
       }
-      userInput = input.nextInt();
-      if (!isValidChoice(userInput, selectionSignature)) {
+      userInput = scanner.nextInt();
+      if (!isValidChoice(userInput, menuSelectionChoice)) {
         System.out.println("Bounds " + invalidMessage);
       }
     }
     return userInput;
   }
 
-  // checks for valid choice. choice is what entered. selectionSignature is corrasponds to overall menu selection.(enum?)
-  private boolean isValidChoice(int choice, int selectionSignature) {
+  /**
+   * Method is called from boundsCheck to verify the proper value range for input of respective
+   * menu choice.
+   * @param userInput int the users input that is being checked against the menu's valid input range.
+   * @param menuSelectionChoice int signature of the menu of originating method call for proper check.
+   * @return boolean that is verifies that the userInput is in bounds or not.
+   */
+  private boolean isValidChoice(int userInput, int menuSelectionChoice) {
     boolean result = false;
-    switch (selectionSignature) {
+    switch (menuSelectionChoice) {
       case MENU_CHOICE:
-        result = choice >= EXIT_CODE && choice <= MENU_MAX_VALUE;
+        result = userInput >= EXIT_CODE && userInput <= MENU_MAX_VALUE;
         break;
       case CART_CHOICE:
-        result = choice >= EXIT_CODE && choice <= CART_MAX_VALUE;
+        result = userInput >= EXIT_CODE && userInput <= CART_MAX_VALUE;
         break;
       case PREDICT_CHOICE:
-        result = choice >= EXIT_CODE && choice <= PREDICT_MAX_VALUE;
+        result = userInput >= EXIT_CODE && userInput <= PREDICT_MAX_VALUE;
         break;
       case MONTH_WINNER_CHOICE:
-      case TWO_OPTIONS_SIGNATURE:
+        result = userInput >= EXIT_CODE && userInput <= BY_MONTH_MAX_VALUE;
+        break;
       case YEAR_WINNER_CHOICE:
-        result = choice >= EXIT_CODE && choice <= 2;
+        result = userInput >= EXIT_CODE && userInput <= BY_YEAR_MAX_VALUE;
         break;
       case TOP_CHOICE:
-        result = choice >= EXIT_CODE && choice <= 3;
+        result = userInput >= EXIT_CODE && userInput <= TOP_WINNING_CHOICE_MAX_VALUE;
         break;
-      case MONTH_SIGNATURE:
-        result = choice >= EARLIEST_MONTH && choice <= LATEST_MONTH;
+      case MONTH_SUBMENU_SIGNATURE:
+        result = userInput >= EARLIEST_MONTH && userInput <= LATEST_MONTH;
         break;
-      case YEAR_SIGNATURE:
-        result = choice >= EARLIEST_YEAR && choice <= LATEST_YEAR;
+      case YEAR_SUBMENU_SIGNATURE:
+        result = userInput >= EARLIEST_YEAR && userInput <= LATEST_YEAR;
+        break;
+      case TWO_OPTIONS_SIGNATURE:
+        result = userInput >= EXIT_CODE && userInput <= 2;
         break;
     }
     return result;
   }
 
-  // a call after each menu selection action, so the user does not see the menu after each action.
-  private int returnToMenu(Scanner input) {
+  /**
+   * Helper method that asks the user if they would like to return to the main menu. This method makes
+   * calls to boundsCheck() for valid input.
+   * @return MENU_CHOICE to return to the main menu or -2 to signal to remain in current menu.
+   */
+  private int returnToMenu() {
     System.out.println("Return to Main Menu?\n1. Yes.\n2. No.");
     String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
     if (userInput == 1) {
       return MENU_CHOICE;
     }
