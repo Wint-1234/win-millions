@@ -37,6 +37,8 @@ public class Menu {
   public static final int BY_MONTH_MAX_VALUE = 2;
   public static final int BY_YEAR_MAX_VALUE = 2;
   public static final int TOP_WINNING_CHOICE_MAX_VALUE = 3;
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_GREEN = "\u001B[32m";
 
   // Private fields
   private Cart userCart = new Cart();
@@ -46,7 +48,7 @@ public class Menu {
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
   private final String addTicketsMessage = "Would you like to add the tickets to cart?\n1. Yes\n2. No";
-  private final String winMillionsLogo =
+  private final String winMillionsLogo = ANSI_GREEN +
       "\t\t\t\t\t\t        _.a$$$$$a._\n"
           + "\t\t\t\t\t\t     ,$$$$MEGA$$$$$.\n"
           + "\t\t\t\t\t\t   ,$$$$MILLIONS$$$$$.\n"
@@ -57,10 +59,11 @@ public class Menu {
           + "\t\t\t\t\t\t$$$$$$$$    $    $$$$$$$$\n"
           + "\t\t\t\t\t\t($$$$$$$b       d$$$$$$$)\n"
           + "\t\t\t\t\t\t q$$$$$$$$a._.a$$$$$$$$p\n"
-          + "\t\t\t\t\t\t  q$$$$$$$MEGA$$$$$$p\n"
+          + "\t\t\t\t\t\t  q$$$$$$$MEGA$$$$$$$$p\n"
           + "\t\t\t\t\t\t   `$$$$$MILLIONS$$$$'\n"
           + "\t\t\t\t\t\t     `$$$$$$$$$$$$$'\n"
           + "\t\t\t\t\t\t       `~$$$$$$$~'\n\n"
+          + ANSI_RESET
           + "\t\t----------Welcome to Win Millions!----------\n";
 
   /**
