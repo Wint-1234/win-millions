@@ -9,21 +9,68 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Reads in a file and creates the database of all Mega Millions winning
+ * numbers dating back to 2017.
+ *
+ * @version 1.0
+ */
 public class MegaMillionsDatabase {
+  // Constants
+  public static final String DATABASE_FILE = "src/main/java/com/lottery/"
+      + "database/MegaMillions_Data.txt";
 
   private List<LotteryTicket> lotteryTickets = new ArrayList<>();
   private Map<Integer, Integer> numbersMap;
   private Map<Integer, Integer> megaBallMap;
 
+  /**
+   * Reads in a file and initializes the database.
+   *
+   * @throws FileNotFoundException If the file path provided cannot be found.
+   */
   public MegaMillionsDatabase() throws FileNotFoundException {
     numbersMap = new HashMap<>();
     megaBallMap = new HashMap<>();
     readFile();
   }
 
+  /**
+   * Gets a list of all LotteryTickets in the database.
+   *
+   * @return List of all LotteryTickets in the database.
+   */
+  public List<LotteryTicket> getLotteryTickets() {
+    return lotteryTickets;
+  }
+
+  /**
+   * Gets the database of all numbers and their frequency of appearance.
+   *
+   * @return Map of all numbers and their frequency of appearance.
+   */
+  public Map<Integer, Integer> getNumbersMap() {
+    return numbersMap;
+  }
+
+  /**
+   * Gets the database of all Mega Ball numbers and their frequency of appearance.
+   *
+   * @return Map of all Mega Ball numbers and their frequency of appearance.
+   */
+  public Map<Integer, Integer> getMegaBallMap() {
+    return megaBallMap;
+  }
+
+  /**
+   * Helper method that reads in a file and process each line to create new LotteryTickets.
+   * The lotteryTickets are then added to the database.
+   *
+   * @throws FileNotFoundException If the file path provided cannot be found.
+   */
   private void readFile() throws FileNotFoundException {
     // File instance to read file and scanner for processing
-    File file = new File("src/main/java/com/lottery/database/MegaMillions_Data.txt");
+    File file = new File(DATABASE_FILE);
     Scanner scanner = new Scanner(file);
 
     // Scan through each line in the file
@@ -67,6 +114,11 @@ public class MegaMillionsDatabase {
     }
   }
 
+  /**
+   * Counts the number appearance of each lottery number in the database.
+   *
+   * @param numberArray The int[] of numbers to tally for frequency.
+   */
   private void countNumberAppearance(int[] numberArray) {
     for (int value : numberArray) {
       if (numbersMap.containsKey(value)) {
@@ -77,30 +129,29 @@ public class MegaMillionsDatabase {
     }
   }
 
+  /**
+   * Counts the Mega Ball number appearance within in the database.
+   *
+   * @param value The Mega Ball number to tally for frequency.
+   */
   private void countMegaBallAppearance(int value) {
-      if (megaBallMap.containsKey(value)) {
-        megaBallMap.replace(value, megaBallMap.get(value) + 1);
-      } else {
-        megaBallMap.put(value, 1);
-      }
+    if (megaBallMap.containsKey(value)) {
+      megaBallMap.replace(value, megaBallMap.get(value) + 1);
+    } else {
+      megaBallMap.put(value, 1);
+    }
   }
 
+  /**
+   * Adds the lotteryTicket to running list of LotteryTickets.
+   *
+   * @param lotteryTicket The ticket to add to the list.
+   * @throws NullPointerException If the ticket is null.
+   */
   private void addToList(LotteryTicket lotteryTicket) throws NullPointerException {
     if (lotteryTicket == null) {
       throw new NullPointerException();
     }
     lotteryTickets.add(lotteryTicket);
-  }
-
-  public List<LotteryTicket> getLotteryTickets() {
-    return lotteryTickets;
-  }
-
-  public Map<Integer, Integer> getNumbersMap() {
-    return numbersMap;
-  }
-
-  public Map<Integer, Integer> getMegaBallMap() {
-    return megaBallMap;
   }
 }
