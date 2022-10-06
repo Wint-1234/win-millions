@@ -1,47 +1,44 @@
 package com.lottery.megamillions;
 
 import com.lottery.megamillions.controller.Menu;
-import java.io.FileNotFoundException;
 
 /**
- * Main class that operates the Menu class that reads/displays user input
+ * Main class that operates the Menu class that reads/displays user input.
+ *
+ * @version 1.0
  */
 public class MegaMillions {
-  public static final int EXIT_CODE = 0;
-  public static final int MENU_CHOICE = 99;
-  public static final int CART_CHOICE = 1;
-  public static final int PREDICT_CHOICE = 2;
-  public static final int MONTH_WINNER_CHOICE = 3;
-  public static final int YEAR_WINNER_CHOICE = 4;
-  public static final int TOP_CHOICE = 5;
-  public static final int WAYS_TO_WIN_CHOICE = 6;
-  public static final int HISTORY_CHOICE = 7;
 
-  public static void main(String[] args) throws FileNotFoundException {
-    int choice = MENU_CHOICE;
-
+  /**
+   * Entry point to start the program by creating a menu and is displayed to the user. User can input
+   * desired choice from menu options.
+   * @param args not currently used.
+   */
+  public static void main(String[] args) {
     Menu menu = new Menu();
-    while (choice != EXIT_CODE){
+    int choice = Menu.MENU_CHOICE;
+
+    while (choice != Menu.EXIT_CODE){
       switch (choice){
-        case CART_CHOICE:
+        case Menu.CART_CHOICE:
           choice = menu.viewCart();
           break;
-        case PREDICT_CHOICE:
+        case Menu.PREDICT_CHOICE:
           choice = menu.predictNumbers();
           break;
-        case MONTH_WINNER_CHOICE:
+        case Menu.MONTH_WINNER_CHOICE:
           choice = menu.winnersByMonth();
           break;
-        case YEAR_WINNER_CHOICE:
+        case Menu.YEAR_WINNER_CHOICE:
           choice = menu.winnersByYear();
           break;
-        case TOP_CHOICE:
+        case Menu.TOP_CHOICE:
           choice = menu.topWinningNumbers();
           break;
-        case WAYS_TO_WIN_CHOICE:
+        case Menu.WAYS_TO_WIN_CHOICE:
           choice = menu.howToPlay();
           break;
-        case HISTORY_CHOICE:
+        case Menu.HISTORY_CHOICE:
           choice = menu.displayHistory();
           break;
         default:
