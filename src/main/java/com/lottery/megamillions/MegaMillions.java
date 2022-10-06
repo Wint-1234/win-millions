@@ -1,6 +1,5 @@
 package com.lottery.megamillions;
 
-import com.lottery.database.MegaMillionsDatabase;
 import com.lottery.megamillions.controller.Menu;
 import java.io.FileNotFoundException;
 
@@ -20,30 +19,29 @@ public class MegaMillions {
 
   public static void main(String[] args) throws FileNotFoundException {
     int choice = MENU_CHOICE;
-    var database = new MegaMillionsDatabase().getLotteryTickets();
 
     Menu menu = new Menu();
     while (choice != EXIT_CODE){
       switch (choice){
-        case CART_CHOICE: // 1
+        case CART_CHOICE:
           choice = menu.viewCart();
           break;
-        case PREDICT_CHOICE: // 2
+        case PREDICT_CHOICE:
           choice = menu.predictNumbers();
           break;
-        case MONTH_WINNER_CHOICE: // 3
+        case MONTH_WINNER_CHOICE:
           choice = menu.winnersByMonth();
           break;
-        case YEAR_WINNER_CHOICE: // 4
+        case YEAR_WINNER_CHOICE:
           choice = menu.winnersByYear();
           break;
-        case TOP_CHOICE: // 5
+        case TOP_CHOICE:
           choice = menu.topWinningNumbers();
           break;
-        case WAYS_TO_WIN_CHOICE: // 6
-          choice = menu.waysToWin();
+        case WAYS_TO_WIN_CHOICE:
+          choice = menu.howToPlay();
           break;
-        case HISTORY_CHOICE: // 7
+        case HISTORY_CHOICE:
           choice = menu.displayHistory();
           break;
         default:
