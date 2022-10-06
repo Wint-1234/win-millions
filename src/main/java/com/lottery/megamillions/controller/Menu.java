@@ -26,17 +26,21 @@ public class Menu {
   public static final int HISTORY_CHOICE = 7;
   public static final int MENU_MAX_VALUE = 7;
   public static final int CART_MAX_VALUE = 4;
-  public static final int PREDICT_MAX_VALUE = 2; //change?
-  public static final int EARLIEST_YEAR = 2017;
-  public static final int LATEST_YEAR = 2022;
-  public static final int EARLIEST_MONTH = 1;
-  public static final int LATEST_MONTH = 12;
-  public static final int YEAR_SUBMENU_SIGNATURE = 8;
-  public static final int MONTH_SUBMENU_SIGNATURE = 9;
-  public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final int PREDICT_MAX_VALUE = 2;
   public static final int BY_MONTH_MAX_VALUE = 2;
   public static final int BY_YEAR_MAX_VALUE = 2;
   public static final int TOP_WINNING_CHOICE_MAX_VALUE = 3;
+  public static final int EARLIEST_MONTH = 1;
+  public static final int LATEST_MONTH = 12;
+  public static final int EARLIEST_YEAR = 2017;
+  public static final int LATEST_YEAR = 2022;
+  public static final int MONTH_SUBMENU_SIGNATURE = 9;
+  public static final int YEAR_SUBMENU_SIGNATURE = 8;
+  public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_GREEN = "\u001B[32m";
+  public static final String ANSI_RED = "\u001B[31m";
+
 
   // Private fields
   private Cart userCart = new Cart();
@@ -46,8 +50,8 @@ public class Menu {
   private final String standardInputMessage = "Please enter a number %d to %d:%n";
   private final String standardInputError = "Error, enter a number %d to %d.";
   private final String addTicketsMessage = "Would you like to add the tickets to cart?\n1. Yes\n2. No";
-  private final String winMillionsLogo =
-      "\t\t\t\t\t\t        _.a$$$$$a._\n"
+  private final String winMillionsLogo = ANSI_GREEN + "\n"
+          + "\t\t\t\t\t\t       _.a$$$$$a._\n"
           + "\t\t\t\t\t\t     ,$$$$MEGA$$$$$.\n"
           + "\t\t\t\t\t\t   ,$$$$MILLIONS$$$$$.\n"
           + "\t\t\t\t\t\t  d$$$$$$$$$$$$$$$$$$$b\n"
@@ -57,10 +61,11 @@ public class Menu {
           + "\t\t\t\t\t\t$$$$$$$$    $    $$$$$$$$\n"
           + "\t\t\t\t\t\t($$$$$$$b       d$$$$$$$)\n"
           + "\t\t\t\t\t\t q$$$$$$$$a._.a$$$$$$$$p\n"
-          + "\t\t\t\t\t\t  q$$$$$$$MEGA$$$$$$p\n"
+          + "\t\t\t\t\t\t  q$$$$$$$MEGA$$$$$$$$p\n"
           + "\t\t\t\t\t\t   `$$$$$MILLIONS$$$$'\n"
           + "\t\t\t\t\t\t     `$$$$$$$$$$$$$'\n"
           + "\t\t\t\t\t\t       `~$$$$$$$~'\n\n"
+          + ANSI_RESET
           + "\t\t----------Welcome to Win Millions!----------\n";
 
   /**
@@ -175,7 +180,11 @@ public class Menu {
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = PREDICT_CHOICE;
@@ -199,6 +208,7 @@ public class Menu {
     String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_MONTH_MAX_VALUE);
     int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
 
+    // menu breakout first
     if (userInput == 2) {
       userInput = MENU_CHOICE;
     }
@@ -212,13 +222,17 @@ public class Menu {
       System.out.println(selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
+
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
-
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = MONTH_WINNER_CHOICE;
@@ -257,12 +271,16 @@ public class Menu {
       System.out.println(selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage);
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu();
+      if (userInput == EXIT_CODE){
+        userInput = EXIT_CODE;
+      }else {
+        userInput = returnToMenu();
+      }
     }
     if (userInput < 0) {
       userInput = YEAR_WINNER_CHOICE;
@@ -307,13 +325,14 @@ public class Menu {
    * @return int that is used in MegaMillions class for the user's choice of submenu/action.
    */
   public int howToPlay() {
-    System.out.println("\nMega Millions tickets cost $2.00 per play. \n"
+    System.out.println("\nMega Millions tickets cost $2.00 per play.\n"
         + "Players may pick six numbers from two separate pools of numbers:\n"
         + "- Five different numbers from 1 to 70 (the white balls).\n"
         + "And one number from 1 to 25 (the gold Mega Ball).\n"
         + "- Or select Easy Pick/Quick Pick.\n"
-        + "You win the jackpot by matching all six winning numbers in a drawing.\n");
-
+        + ANSI_GREEN
+        + "You win the jackpot by matching all six winning numbers in a drawing.\n"
+        + ANSI_RESET);
     int userInput = returnToMenu();
     if(userInput < 0){
       userInput = WAYS_TO_WIN_CHOICE;
@@ -328,13 +347,18 @@ public class Menu {
    * @return int that is used in MegaMillions class for the user's choice of submenu/action.
    */
   public int displayHistory() {
-    System.out.println("\nThere is over $100 billion spent on lotteries each year. \n"
-        + "Lotteries are run by 48 jurisdictions: 45 states plus the District of Columbia, Puerto Rico, and the U.S. Virgin Islands. \n"
-        + "Lotteries are subject to the laws of and operated independently by each jurisdiction. \n"
-        + "Mega Millions began in 1996 as the Big Game. \n"
-        + "The current cost is $2 to play and the largest jackpot ever won was $1.537 billion in 2018.\n"
-        + "NATIONAL PROBLEM GAMBLING HELPLINE 1-800-522-4700 \n ");
-
+    System.out.println("\n"
+        + "There is over $100 billion spent on lotteries each year.\n"
+        + "Lotteries are run by 48 jurisdictions: 45 states plus the\n"
+        + "District of Columbia, Puerto Rico, and the U.S. Virgin Islands.\n"
+        + "Lotteries are subject to the laws of and operated independently\n"
+        + "by each jurisdiction.\n\n"
+        + "Mega Millions began in 1996 as the Big Game. The current cost is $2\n"
+        + "to play and the largest jackpot ever won was $1.537 billion in 2018.\n"
+        + ANSI_RED
+        + "NATIONAL PROBLEM GAMBLING HELPLINE 1-800-522-4700."
+        + ANSI_RESET
+        + "\n");
     int userInput = returnToMenu();
     if(userInput < 0){
       userInput = HISTORY_CHOICE;
