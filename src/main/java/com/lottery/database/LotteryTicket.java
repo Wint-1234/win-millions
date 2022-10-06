@@ -136,7 +136,15 @@ public class LotteryTicket implements Comparable<LotteryTicket> {
    */
   @Override
   public String toString(){
-    return Arrays.toString(getLotteryNumbers()) + " (" + getMegaBallNumber() + ")\n";
+    String ANSI_RESET = "\u001B[0m";
+    String ANSI_RED = "\u001B[31m";
+    String ANSI_BLUE = "\u001B[34m";
+    return ANSI_RED +
+        Arrays.toString(getLotteryNumbers())
+        + ANSI_RESET
+        + ANSI_BLUE
+        + " (" + getMegaBallNumber() + ")"
+        + ANSI_RESET + "\n";
   }
 
   /**
