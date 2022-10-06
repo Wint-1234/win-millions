@@ -128,37 +128,49 @@ public class LotteryNumberPredictor {
   }
 
   /**
+   * Gets the list of top 10 numbers in the database.
    *
-   *
-   * @param numberArray
-   * @param numbersToCheck
-   * @return
+   * @return List of top 10 numbers with the highest frequency in the database.
    */
-  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
-    for (int value: numbersToCheck) {
-      if (Arrays.binarySearch(numberArray, value) < 0) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  public List<Integer> getTop10Numbers(Map<Integer, Integer> map) {
-    return produceTop10Numbers(map);
-  }
-
-  public List<Integer> getTop5MegaBalls(Map<Integer, Integer> map) {
-    return produceTop5MegaBalls(map);
-  }
-
   public List<Integer> getTop10Numbers() {
     return top10Numbers;
   }
 
+  /**
+   * Gets the list of top 5 Mega Balls in the database.
+   *
+   * @return List of top 5 Mega Balls with the highest frequency in the database.
+   */
   public List<Integer> getTop5MegaBalls() {
     return top5MegaBalls;
   }
 
+  /**
+   * Returns the top 10 numbers with the highest frequency.
+   *
+   * @param map The map of values to search for.
+   * @return List of top 10 numbers with the highest frequency in this map
+   */
+  public List<Integer> getTop10Numbers(Map<Integer, Integer> map) {
+    return produceTop10Numbers(map);
+  }
+
+  /**
+   * Returns the top 5 Mega Ball numbers with the highest frequency.
+   *
+   * @param map The map of values to search for.
+   * @return List of top 5 Mega Balls with the highest frequency in this map.
+   */
+  public List<Integer> getTop5MegaBalls(Map<Integer, Integer> map) {
+    return produceTop5MegaBalls(map);
+  }
+
+  /**
+   * Produces the top 10 numbers in this map.
+   *
+   * @param map The map to search through.
+   * @return List of top 10 numbers in this map.
+   */
   private List<Integer> produceTop10Numbers(Map<Integer, Integer> map) {
     var numbers = numbersMap.keySet().toArray();
     var frequency = numbersMap.values().toArray();
@@ -176,6 +188,12 @@ public class LotteryNumberPredictor {
     return result;
   }
 
+  /**
+   * Produces the top 5 Mega Balls in this map
+   *
+   * @param map The map to search through.
+   * @return List of top 5 Mega Balls in this map.
+   */
   private List<Integer> produceTop5MegaBalls(Map<Integer, Integer> map) {
     var numbers = megaBallMap.keySet().toArray();
     var frequency = megaBallMap.values().toArray();
@@ -191,5 +209,21 @@ public class LotteryNumberPredictor {
       result.add(numberArray[i].getNumber());
     }
     return result;
+  }
+
+  /**
+   * Helper method to check if numberArray contains all the values in numbersToCheck.
+   *
+   * @param numberArray The array to search for values.
+   * @param numbersToCheck The array of values to search for in the numberArray.
+   * @return Returns true iff numberArray contains all the values in numbersToCheck.
+   */
+  private boolean containsNumbers(int[] numberArray, int[] numbersToCheck) {
+    for (int value: numbersToCheck) {
+      if (Arrays.binarySearch(numberArray, value) < 0) {
+        return false;
+      }
+    }
+    return true;
   }
 }
