@@ -58,25 +58,26 @@ public class Menu {
   private final String menuBorder = "========================";
   String num = "5";
 
-  String ball2 = "\n\n\n" +
-      "        _.a$$$$$a._\n"
-      + "     ,$$$$MEGA$$$$$.\n"
-      + "   ,$$$$MILLIONS$$$$$.\n"
-      + "  d$$$$$$$$$$$$$$$$$$$b\n"
-      + " d$$$$$$$$~'\"`~$$$$$$$$b\n"
-      + "($$$$$$$p   _   q$$$$$$$)\n"
-      + "$$$$$$$$    $    $$$$$$$$\n"
-      + "$$$$$$$$    $    $$$$$$$$\n"
-      + "($$$$$$$b       d$$$$$$$)\n"
-      + " q$$$$$$$$a._.a$$$$$$$$p\n"
-      + "  q$$$$$$$MEGA$$$$$$p\n"
-      + "   `$$$$$MILLIONS$$$$'\n"
-      + "     `$$$$$$$$$$$$$'\n"
-      + "       `~$$$$$$$~'";
+  String ball2 =
+      "\t\t\t\t\t\t        _.a$$$$$a._\n"
+      + "\t\t\t\t\t\t     ,$$$$MEGA$$$$$.\n"
+      + "\t\t\t\t\t\t   ,$$$$MILLIONS$$$$$.\n"
+      + "\t\t\t\t\t\t  d$$$$$$$$$$$$$$$$$$$b\n"
+      + "\t\t\t\t\t\t d$$$$$$$$~'\"`~$$$$$$$$b\n"
+      + "\t\t\t\t\t\t($$$$$$$p   _   q$$$$$$$)\n"
+      + "\t\t\t\t\t\t$$$$$$$$    $    $$$$$$$$\n"
+      + "\t\t\t\t\t\t$$$$$$$$    $    $$$$$$$$\n"
+      + "\t\t\t\t\t\t($$$$$$$b       d$$$$$$$)\n"
+      + "\t\t\t\t\t\t q$$$$$$$$a._.a$$$$$$$$p\n"
+      + "\t\t\t\t\t\t  q$$$$$$$MEGA$$$$$$p\n"
+      + "\t\t\t\t\t\t   `$$$$$MILLIONS$$$$'\n"
+      + "\t\t\t\t\t\t     `$$$$$$$$$$$$$'\n"
+      + "\t\t\t\t\t\t       `~$$$$$$$~'\n\n"
+      + "\t\t----------Welcome to Win Millions!----------\n";
 
   // Startup message to the program.
   public Menu() {
-    System.out.println("----------Welcome to Win Millions!----------\n");
+    System.out.println("\t\t----------Welcome to Win Millions!----------\n");
   }
 
   // Returns the userInput of a menu choice 0 to 7.
