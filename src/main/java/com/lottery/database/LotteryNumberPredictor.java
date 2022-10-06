@@ -20,6 +20,7 @@ public class LotteryNumberPredictor {
   public static final int YEAR_OFFSET = 1900;
   public static final int MONTH_UPPER_BOUND = 11;
   public static final String MONTH_ERROR = "Invalid month value: ";
+  public static final String INVALID_YEAR_ERROR = "Invalid year: ";
 
   private final List<LotteryTicket> database;
   private final Map<Integer, Integer> numbersMap;
@@ -62,9 +63,16 @@ public class LotteryNumberPredictor {
         .collect(Collectors.toList());
   }
 
+  /**
+   * Returns a list of LotteryTickets with the specified year.
+   *
+   * @param year int representation of year to search for from 2017-2022 (Inclusive).
+   * @return List of LotteryTickets with the specified year.
+   * @throws IllegalArgumentException If year value does not adhere to specifications.
+   */
   public List<LotteryTicket> findByYear(int year) throws IllegalArgumentException {
     if (year < YEAR_LOWER_BOUND || year > YEAR_UPPER_BOUND) {
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException(INVALID_YEAR_ERROR + year);
     }
     return database
         .stream()
