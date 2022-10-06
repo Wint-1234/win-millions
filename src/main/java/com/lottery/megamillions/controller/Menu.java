@@ -33,6 +33,9 @@ public class Menu {
   public static final int YEAR_SIGNATURE = 8;
   public static final int MONTH_SIGNATURE = 9;
   public static final int TWO_OPTIONS_SIGNATURE = 98;
+  public static final int BY_MONTH_MAX_VALUE = 2;
+  public static final int BY_YEAR_MAX_VALUE = 2;
+  public static final int TOP_WINNING_CHOICE_MAX_VALUE = 3;
 
   private Cart userCart = new Cart();
   private List<LotteryTicket> selectedTickets = new ArrayList<>();
@@ -117,21 +120,20 @@ public class Menu {
     String invalidMessage = String.format(standardInputError, EXIT_CODE, CART_MAX_VALUE);
     Scanner input = new Scanner(System.in);
     int userInput = boundsCheck(CART_CHOICE, invalidMessage, input);
-    // TODO: 10/5/2022 potentional change for method call only that is provided in cart
     switch (userInput) {
       case 1:
         addToCart();
-        userInput = returnToMenu(input); //stall
+        userInput = returnToMenu();
         break;
       case 2:
         selectedTickets = new ArrayList<>();
         System.out.println("Selected tickets cleared.");
-        userInput = returnToMenu(input);
+        userInput = returnToMenu();
         break;
       case 3:
         userCart = new Cart();
         System.out.println("Cart is cleared.");
-        userInput = returnToMenu(input);
+        userInput = returnToMenu();
         break;
       case 4:
         userInput = MENU_CHOICE;
@@ -154,7 +156,7 @@ public class Menu {
 
     String invalidMessage = String.format(standardInputError, EXIT_CODE, PREDICT_MAX_VALUE);
     Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(PREDICT_CHOICE, invalidMessage, input);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
 
     if (userInput == 2) {
       userInput = MENU_CHOICE;
@@ -166,13 +168,13 @@ public class Menu {
       System.out.println("The predicted tickets: \n" + selectedTickets);
       System.out.println(addTicketsMessage);
 
-      invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+      invalidMessage = String.format(standardInputError, EXIT_CODE, TWO_OPTIONS_SIGNATURE);
       userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
 
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = PREDICT_CHOICE;
@@ -180,16 +182,16 @@ public class Menu {
     return userInput;
   }
 
-  public int winnersByMonth() {// TODO: 10/5/2022 going to have to -1 to month input for method call
+  public int winnersByMonth() {
     System.out.println("Winning numbers on particular month.");
     System.out.println("1. Display winning numbers by desired month.");
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 2);
+    System.out.printf(standardInputMessage, EXIT_CODE, BY_MONTH_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_MONTH_MAX_VALUE);
     Scanner input = new Scanner(System.in);
-    int userInput = boundsCheck(MONTH_WINNER_CHOICE, invalidMessage, input);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
 
     if (userInput == 2) {
       userInput = MENU_CHOICE;
@@ -210,10 +212,10 @@ public class Menu {
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
 
     }
-    if (userInput < 0) { //redundant?
+    if (userInput < 0) {
       userInput = MONTH_WINNER_CHOICE;
     }
     return userInput;
@@ -224,9 +226,9 @@ public class Menu {
     System.out.println("1. Display winning numbers by desired year.");
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 2);
+    System.out.printf(standardInputMessage, EXIT_CODE, BY_YEAR_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, BY_YEAR_MAX_VALUE);
     Scanner input = new Scanner(System.in);
     int userInput = boundsCheck(YEAR_WINNER_CHOICE, invalidMessage, input);
 
@@ -249,7 +251,7 @@ public class Menu {
       if (userInput == 1) {
         addToCart();
       }
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = YEAR_WINNER_CHOICE;
@@ -262,9 +264,9 @@ public class Menu {
     System.out.println("1. Display Top-10 winning numbers & Top-5 Mega Ball numbers.");
     System.out.println("2. Return to main menu.");
     System.out.println(CLOSE_PROGRAM_MESSAGE);
-    System.out.printf(standardInputMessage, EXIT_CODE, 3);
+    System.out.printf(standardInputMessage, EXIT_CODE, TOP_WINNING_CHOICE_MAX_VALUE);
 
-    String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
+    String invalidMessage = String.format(standardInputError, EXIT_CODE, TOP_WINNING_CHOICE_MAX_VALUE);
     Scanner input = new Scanner(System.in);
     int userInput = boundsCheck(TOP_CHOICE, invalidMessage, input);
 
@@ -275,44 +277,43 @@ public class Menu {
     if (userInput == 1) {
       System.out.println("Displaying Top-10 winning numbers: \n" + database.getTop10Numbers());
       System.out.println("Displaying Top-5 Mega Ball numbers: \n" + database.getTop5MegaBalls());
-      userInput = returnToMenu(input);
+      userInput = returnToMenu();
     }
     if (userInput < 0) {
       userInput = TOP_CHOICE;
     }
     return userInput;
   }
-  public void sleep(int i){
-    try{
-      Thread.sleep(i);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
 
   public int waysToWin() {
-    //System.out.println("Ways to win the Mega Ball." );
-    System.out.println("Mega Millions tickets cost $2.00 per play. \n"
+    System.out.println("\nMega Millions tickets cost $2.00 per play. \n"
         + "Players may pick six numbers from two separate pools of numbers:\n"
         + "- Five different numbers from 1 to 70 (the white balls).\n"
         + "And one number from 1 to 25 (the gold Mega Ball).\n"
         + "- Or select Easy Pick/Quick Pick.\n"
         + "You win the jackpot by matching all six winning numbers in a drawing.\n");
-    sleep(15000);
-    return MENU_CHOICE;
+
+    int userInput = returnToMenu();
+    if(userInput < 0){
+      userInput = WAYS_TO_WIN_CHOICE;
+    }
+    return userInput;
 
   }
 
   public int displayHistory() {
-    System.out.println("There is over $100 billion spent on lotteries each year. \n"
+    System.out.println("\nThere is over $100 billion spent on lotteries each year. \n"
         + "Lotteries are run by 48 jurisdictions: 45 states plus the District of Columbia, Puerto Rico, and the U.S. Virgin Islands. \n"
         + "Lotteries are subject to the laws of and operated independently by each jurisdiction. \n"
         + "Mega Millions began in 1996 as the Big Game. \n"
         + "The current cost is $2 to play and the largest jackpot ever won was $1.537 billion in 2018.\n"
         + "NATIONAL PROBLEM GAMBLING HELPLINE 1-800-522-4700 \n ");
-    sleep(15000);
-    return MENU_CHOICE;
+
+    int userInput = returnToMenu();
+    if(userInput < 0){
+      userInput = WAYS_TO_WIN_CHOICE;
+    }
+    return userInput;
   }
 
   private void addToCart() {
@@ -352,12 +353,13 @@ public class Menu {
         result = choice >= EXIT_CODE && choice <= PREDICT_MAX_VALUE;
         break;
       case MONTH_WINNER_CHOICE:
-      case TWO_OPTIONS_SIGNATURE:
+        result = choice >= EXIT_CODE && choice <= BY_MONTH_MAX_VALUE;
+        break;
       case YEAR_WINNER_CHOICE:
-        result = choice >= EXIT_CODE && choice <= 2;
+        result = choice >= EXIT_CODE && choice <= BY_YEAR_MAX_VALUE;
         break;
       case TOP_CHOICE:
-        result = choice >= EXIT_CODE && choice <= 3;
+        result = choice >= EXIT_CODE && choice <= TOP_WINNING_CHOICE_MAX_VALUE;
         break;
       case MONTH_SIGNATURE:
         result = choice >= EARLIEST_MONTH && choice <= LATEST_MONTH;
@@ -365,15 +367,19 @@ public class Menu {
       case YEAR_SIGNATURE:
         result = choice >= EARLIEST_YEAR && choice <= LATEST_YEAR;
         break;
+      case TWO_OPTIONS_SIGNATURE:
+        result = choice >= EXIT_CODE && choice <= 2;
+        break;
     }
     return result;
   }
 
   // a call after each menu selection action, so the user does not see the menu after each action.
-  private int returnToMenu(Scanner input) {
+  private int returnToMenu() {
+    Scanner scanner = new Scanner(System.in);
     System.out.println("Return to Main Menu?\n1. Yes.\n2. No.");
     String invalidMessage = String.format(standardInputError, EXIT_CODE, 2);
-    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, input);
+    int userInput = boundsCheck(TWO_OPTIONS_SIGNATURE, invalidMessage, scanner);
     if (userInput == 1) {
       return MENU_CHOICE;
     }
