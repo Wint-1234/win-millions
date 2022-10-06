@@ -282,16 +282,36 @@ public class Menu {
     }
     return userInput;
   }
+  public void sleep(int i){
+    try{
+      Thread.sleep(i);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
+
 
   public int waysToWin() {
-    System.out.println("Ways to win the Mega Ball.");
-    // TODO: 10/4/2022 need imp
+    //System.out.println("Ways to win the Mega Ball." );
+    System.out.println("Mega Millions tickets cost $2.00 per play. \n"
+        + "Players may pick six numbers from two separate pools of numbers:\n"
+        + "- Five different numbers from 1 to 70 (the white balls).\n"
+        + "And one number from 1 to 25 (the gold Mega Ball).\n"
+        + "- Or select Easy Pick/Quick Pick.\n"
+        + "You win the jackpot by matching all six winning numbers in a drawing.\n");
+    sleep(15000);
     return MENU_CHOICE;
+
   }
 
   public int displayHistory() {
-    System.out.println("History of the Mega Millions.");
-    // TODO: 10/4/2022 need imp
+    System.out.println("There is over $100 billion spent on lotteries each year. \n"
+        + "Lotteries are run by 48 jurisdictions: 45 states plus the District of Columbia, Puerto Rico, and the U.S. Virgin Islands. \n"
+        + "Lotteries are subject to the laws of and operated independently by each jurisdiction. \n"
+        + "Mega Millions began in 1996 as the Big Game. \n"
+        + "The current cost is $2 to play and the largest jackpot ever won was $1.537 billion in 2018.\n"
+        + "NATIONAL PROBLEM GAMBLING HELPLINE 1-800-522-4700 \n ");
+    sleep(15000);
     return MENU_CHOICE;
   }
 
