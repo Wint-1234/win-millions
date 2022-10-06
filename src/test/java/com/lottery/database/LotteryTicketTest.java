@@ -10,7 +10,7 @@ class LotteryTicketTest {
 
   @Test
   void testSetLotteryNumbers() {
-    int[] lottoNumbers = new int[]{1, 2, 3, 4, 5};
+    int[] lottoNumbers = new int[]{1, 21, 3, 4, 5};
     int megaBall = 6;
     LotteryTicket ticket = new LotteryTicket(lottoNumbers, megaBall);
     ticket.setLotteryNumbers(lottoNumbers);

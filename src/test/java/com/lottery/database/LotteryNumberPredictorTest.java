@@ -50,8 +50,6 @@ class LotteryNumberPredictorTest {
     System.out.println(lotteryNumberPredictor.getTop5MegaBalls());
     System.out.println("\n");
     System.out.println(lotteryNumberPredictor.predictForMe());
-
-
   }
 
 }
